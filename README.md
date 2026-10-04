@@ -37,7 +37,6 @@ prototype/
   images/       stay photos, provider logos, traveler avatars
   build.py      inlines images and writes index.html and artifact.html
   index.html    built standalone page
-  writeup.html  write-up page linked from the prototype
 PRD.md          product requirements
 Writeup.md      take-home write-up
 ```
