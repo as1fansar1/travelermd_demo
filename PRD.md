@@ -67,12 +67,6 @@ P0 unless marked.
   - imported totals that don't match the provider's checkout: under 2%
   - one person's preferences shown to someone else: never
 
-## Riskiest assumptions
-
-1. **Starting from preferences is worth the extra step.** Test with 8–10 organizers. If most skip "What matters this trip", fill it in from traveler.md and remove the step.
-2. **Approval voting picks a winner.** If most groups tap every stay or end in a tie, add a "can't do this one" option.
-3. **Friends vote through a link.** If fewer than half vote within 24 hours, move voting into the chat as a poll.
-
 ## Open questions
 
 - **Who owns a group trip.md?** Proposal: the organizer, with time-limited access for the others.
