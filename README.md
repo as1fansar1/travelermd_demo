@@ -3,7 +3,6 @@
 A clickable mobile prototype of a group wishlist for a Lisbon trip: four friends, three stays from three booking sites, one decision.
 
 - **Live prototype:** https://claude.ai/artifact/Ro4xB96NhXFBvdWSFi1eg1
-- **Write-up:** [Writeup.md](Writeup.md)
 - **PRD:** [PRD.md](PRD.md)
 
 ## The idea
@@ -38,7 +37,6 @@ prototype/
   build.py      inlines images and writes index.html and artifact.html
   index.html    built standalone page
 PRD.md          product requirements
-Writeup.md      take-home write-up
 ```
 
 To rebuild after editing `src.html`:
