@@ -1,6 +1,6 @@
 # PRD: Group wishlist
 
-**Traveler.md** · Draft v0.3 · Oct 4, 2026 · Asif Ansari
+**Traveler.md** · Draft v0.4 · Oct 4, 2026 · Asif Ansari
 [Prototype](https://claude.ai/artifact/Ro4xB96NhXFBvdWSFi1eg1) · [Code](https://github.com/as1fansar1/travelermd_demo)
 
 ## Problem
@@ -59,7 +59,7 @@ P0 unless marked.
 ## Metrics
 
 - **North star:** shared wishlists that reach a decision within 72 hours. Target 50%.
-- **Memory:** organizers who open a flag or correct a preference. Target 50%.
+- **Start step:** organizers who set "What matters this trip" instead of skipping it. Target 50%.
 - **Inputs:**
   - friends who vote within 24 hours
   - wishlists with stays from 2 or more providers
@@ -69,8 +69,9 @@ P0 unless marked.
 
 ## Riskiest assumptions
 
-1. **Organizers act on memory.** Test with 8–10 organizers. If fewer than half open a flag or mark a preference, cut memory down to one heads-up per conflict.
-2. **Friends vote through a link.** If fewer than half vote within 24 hours, move voting into the chat as a poll.
+1. **Starting from preferences is worth the extra step.** Test with 8–10 organizers. If most skip "What matters this trip", fill it in from traveler.md and remove the step.
+2. **Approval voting picks a winner.** If most groups tap every stay or end in a tie, add a "can't do this one" option.
+3. **Friends vote through a link.** If fewer than half vote within 24 hours, move voting into the chat as a poll.
 
 ## Open questions
 
