@@ -1,0 +1,1193 @@
+<title>Lisbon Trip Wishlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the Traveler.md app (dark, Inter Tight, coral, ticket-style trip header, Sections | .md toggle) in a phone frame, between a guide rail and a design-notes rail. Single dark theme on purpose: it matches traveler.md and its app. */
+:root{
+  --bg:#0a0a0a; --bg-2:#111113; --sheet:#161618;
+  --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.08); --surface-3:rgba(255,255,255,.12);
+  --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.16);
+  --text:#f5f9ff; --text-2:rgba(245,249,255,.74); --muted:rgba(255,255,255,.5); --faint:rgba(255,255,255,.32);
+  --ink:#0a0a0a;
+  --coral:#f57963; --coral-deep:#e25e48; --sunset:#f9ac69; --sand:#fff4ec;
+  --mint:#9ee3d2; --deep:#0a292c; --red:#ff7b7b;
+  --spectrum:linear-gradient(90deg,#ff6b6b 0%,orange 14%,gold 28%,#32cd32 42%,#00ced1 57%,#4169e1 71%,#9370db 85%,#ff1493 100%);
+  --sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--text)}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:28px 40px;font-size:14px;line-height:1.45;
+  background:radial-gradient(900px 500px at 15% -10%,rgba(245,121,99,.16),transparent 60%),radial-gradient(800px 600px at 95% 10%,rgba(10,41,44,.9),transparent 60%),var(--bg);background-attachment:fixed}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+a{color:var(--coral)}
+.tnum{font-variant-numeric:tabular-nums}
+
+.stage{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 410px minmax(0,1fr);gap:40px;align-items:start}
+.notes{grid-column:1;position:sticky;top:24px;display:flex;flex-direction:column;gap:22px;min-width:0}
+.device-wrap{grid-column:2;display:flex;flex-direction:column;align-items:center;gap:12px}
+.side{grid-column:3;position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.brand{display:flex;flex-direction:column;gap:8px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:17px;letter-spacing:-.02em}
+.logo .md{font-weight:500;color:var(--muted)}
+.beta{font-size:10px;font-weight:700;letter-spacing:.06em;background:#fff;color:var(--ink);border-radius:999px;padding:2px 7px}
+.brand h1{margin:0;font-weight:600;font-size:34px;line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.grad{background:var(--spectrum);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand p{margin:0;color:var(--text-2);max-width:42ch}
+.label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+.steps{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+.step{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;text-align:left;padding:9px 10px;border-radius:12px;width:100%}
+.step:hover{background:var(--surface)}
+.step .n{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--muted)}
+.step.done .n{background:var(--mint);border-color:var(--mint);color:var(--ink)}
+.step.cur{background:var(--surface);box-shadow:inset 2px 0 0 var(--coral)}
+.step.cur .n{border-color:var(--text);color:var(--text)}
+.step b{display:block;font-weight:600;font-size:14px}
+.step small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35}
+
+.why{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.why h3{margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.why ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px;color:var(--text-2);font-size:13.5px}
+.why li::marker{color:var(--coral)}
+.why code{font-family:var(--mono);font-size:12px;background:var(--surface-2);padding:1px 5px;border-radius:5px;color:var(--text)}
+
+.ctrl{display:flex;flex-direction:column;gap:8px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg button{padding:8px 10px;border-radius:9px;font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--text-2)}
+.seg button img{width:20px;height:20px;border-radius:50%}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.linkbtn{font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;align-self:flex-start}
+.linkbtn:hover{color:var(--text)}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+
+/* Device */
+.device{position:relative;width:390px;height:812px;border-radius:50px;background:var(--bg);border:9px solid #26262a;outline:1px solid #3a3a40;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.04)}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.statusbar{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:13px;font-weight:600}
+.statusbar i{width:17px;height:9px;border:1.5px solid var(--text);border-radius:3px;display:inline-block;position:relative}
+.statusbar i::after{content:"";position:absolute;inset:1px 4px 1px 1px;background:var(--text);border-radius:1px}
+.device-cap{font-size:12.5px;color:var(--muted)}
+
+/* App */
+.app{padding:0 16px 150px;display:flex;flex-direction:column;gap:14px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;color:var(--text)}
+.tb-r{display:flex;align-items:center;gap:8px}
+.iconbtn{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2)}
+.me{width:30px;height:30px;border-radius:50%;object-fit:cover}
+
+.ticket{display:grid;grid-template-columns:1fr 78px;border-radius:16px;color:var(--ink);position:relative;background:linear-gradient(120deg,#ffb494,#f57963 70%,#f1655a)}
+.ticket.chosen{background:linear-gradient(120deg,#c7f1e6,#9ee3d2 70%,#7fd3c0)}
+.ticket .main{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;border-right:2px dashed rgba(10,10,10,.22)}
+.ticket .dates{font-size:11.5px;font-weight:500;opacity:.75;display:flex;justify-content:space-between;align-items:center}
+.ticket .badge{font-size:10px;font-weight:700;letter-spacing:.08em;background:rgba(255,255,255,.55);border-radius:999px;padding:3px 8px}
+.ticket h2{margin:0;font-size:25px;font-weight:600;letter-spacing:-.025em;line-height:1.05}
+.ticket .stub{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.ticket .stub b{font-size:30px;font-weight:600;line-height:1;letter-spacing:-.03em}
+.ticket .stub span{font-size:10px;font-weight:700;letter-spacing:.1em;opacity:.7}
+.ticket::before,.ticket::after{content:"";position:absolute;right:70px;width:16px;height:16px;border-radius:50%;background:var(--bg)}
+.ticket::before{top:-8px}.ticket::after{bottom:-8px}
+
+.toggles{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mode{display:flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.mode button{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;color:var(--text-2);display:flex;align-items:center;gap:5px}
+.mode button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.chipbtn{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--surface-2);display:inline-flex;align-items:center;gap:6px}
+.chipbtn.coral{background:var(--coral);color:var(--ink)}
+
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.sec .hd{display:flex;justify-content:space-between;align-items:center}
+.sec .hd .label{font-size:10.5px}
+.sec .hd .pen{color:var(--faint)}
+.sec p{margin:0;font-size:13.5px;color:var(--text-2)}
+.req{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:4px 10px 4px 8px;border-radius:999px;background:var(--surface-2);color:var(--text-2)}
+.crew{display:flex;align-items:center;gap:10px}
+.avs{display:flex}
+.av{width:28px;height:28px;border-radius:50%;border:2px solid #17171a;object-fit:cover;background:var(--surface-2)}
+.avs .av+.av{margin-left:-8px}
+.av.pending{opacity:.35;filter:grayscale(1)}
+.crew span{font-size:12.5px;color:var(--muted)}
+
+.sechead{display:flex;align-items:center;justify-content:space-between;padding-top:4px}
+.sechead h3{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.addlink{font-weight:600;color:var(--coral);font-size:13.5px;display:inline-flex;align-items:center;gap:4px}
+.summary{font-size:12.5px;color:var(--muted);margin:-6px 0 0}
+
+.banner{border-radius:16px;padding:13px 14px;background:var(--deep);border:1px solid rgba(158,227,210,.28);display:flex;flex-direction:column;gap:10px}
+.banner.wait{background:var(--surface);border-color:var(--line)}
+.banner p{margin:0;font-size:13.5px;line-height:1.4;color:var(--text)}
+.banner small{color:var(--text-2);font-size:12.5px}
+.banner .row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:999px;font-weight:600;font-size:14px;background:var(--coral);color:var(--ink);text-decoration:none}
+.btn:hover{background:#f88a77}
+.btn.white{background:#fff;color:var(--ink)}
+.btn.ghost{background:var(--surface-2);color:var(--text)}
+.btn.sm{padding:8px 13px;font-size:13px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+.map{background:#121416;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.map svg{display:block;width:100%;height:auto}
+.map .cap{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:6px 12px 8px;border-top:1px solid var(--line)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .4s}
+.card.flash{box-shadow:0 0 0 2px var(--coral)}
+.card .photo{position:relative;height:128px;background:var(--surface-2)}
+.card .photo>img{width:100%;height:100%;object-fit:cover;display:block}
+.prov{position:absolute;left:10px;top:10px;background:#fff;border-radius:999px;padding:5px 10px;display:flex;align-items:center}
+.prov img{height:13px;width:auto;display:block}
+.chosen-tag{position:absolute;right:10px;top:10px;background:var(--mint);color:var(--ink);font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 10px}
+.card .body{padding:13px 14px 14px;display:flex;flex-direction:column;gap:11px}
+.titlerow{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.titlerow h4{margin:0;font-size:16.5px;font-weight:600;letter-spacing:-.015em;line-height:1.2}
+.titlerow .saved-by{font-size:12px;color:var(--muted);margin-top:2px}
+.price{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.price b{display:block;font-size:17px;font-weight:600;line-height:1.1;letter-spacing:-.01em}
+.price small{font-size:12px;color:var(--muted)}
+
+.budget{display:flex;flex-direction:column;gap:5px}
+.bar{position:relative;height:5px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--mint);border-radius:99px}
+.bar .unk{position:absolute;top:0;bottom:0;right:0;background:repeating-linear-gradient(-45deg,var(--sunset) 0 3px,transparent 3px 6px);opacity:.75}
+.bar.over .fill{background:var(--red)}
+.budget .txt{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.budget .txt .ok{color:var(--mint);font-weight:500}
+.budget .txt .warn{color:var(--sunset);font-weight:500}
+.budget .txt .bad{color:var(--red);font-weight:500}
+.inc{display:inline-flex;align-items:center;gap:5px;background:rgba(249,172,105,.14);color:var(--sunset);font-weight:600;font-size:12px;border-radius:999px;padding:3px 9px 3px 7px}
+
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.fact{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 9px 4px 7px;border-radius:999px;background:var(--surface-2);color:var(--text-2)}
+
+.foryou{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;background:rgba(0,0,0,.25);border:1px dashed var(--line-2);text-align:left;width:100%}
+.foryou:hover{border-color:var(--muted)}
+.foryou .who{font-family:var(--mono);font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:4px;flex:none}
+.foryou .sigs{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.sig{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;border-radius:999px;padding:2px 8px 2px 5px}
+.sig.match{background:rgba(158,227,210,.13);color:var(--mint)}
+.sig.partial{background:var(--surface-2);color:var(--text-2)}
+.sig.conflict{background:rgba(255,123,123,.13);color:var(--red)}
+.sig.unknown{background:var(--surface-2);color:var(--muted)}
+.foryou .chev{color:var(--muted);flex:none}
+
+.votes{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:11px;border-top:1px solid var(--line)}
+.votes .who-in{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);min-width:0}
+.votes .who-in .av{width:24px;height:24px}
+.votes .who-in b{color:var(--text);font-weight:600}
+.in-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 13px;font-weight:600;font-size:13px;border:1.5px solid var(--line-2);flex:none}
+.in-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.choose{font-size:13px;font-weight:600;color:var(--text-2);text-decoration:underline;text-underline-offset:3px}
+.notes-in{display:flex;flex-direction:column;gap:6px}
+.quote{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--text-2)}
+.quote img{width:20px;height:20px;border-radius:50%;flex:none;object-fit:cover}
+.quote span{background:var(--surface-2);border-radius:4px 12px 12px 12px;padding:5px 9px}
+
+/* .md view */
+.mdfile{background:#0e0f10;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.mdfile .fh{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.mdfile .fh b{color:var(--text);font-weight:500}
+.mdfile pre{margin:0;padding:10px 0;font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--text-2);white-space:pre-wrap;word-break:break-word}
+.mdfile pre span{display:block;padding:0 12px 0 10px;border-left:2px solid transparent}
+.mdfile pre .h{color:var(--text);font-weight:500}
+.mdfile pre .k{color:var(--sunset)}
+.mdfile pre .new{background:rgba(158,227,210,.08);border-left-color:var(--mint);animation:glow 2.4s ease-out}
+.audit{display:flex;flex-direction:column;gap:6px}
+.audit .row{display:grid;grid-template-columns:44px 1fr;gap:8px;font-size:12px;color:var(--text-2)}
+.audit .row time{font-family:var(--mono);color:var(--muted);font-size:11px;padding-top:1px}
+
+/* Bottom nav */
+.navbar{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:8px 18px 18px;background:linear-gradient(to top,var(--bg) 78%,rgba(10,10,10,0));display:flex;flex-direction:column;gap:10px}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;background:rgba(28,28,31,.92);border:1px solid var(--line);border-radius:22px;padding:7px 6px;backdrop-filter:blur(10px)}
+.nav span,.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--muted)}
+.nav .on{color:var(--text)}
+.orb{width:46px;height:46px;border-radius:50%;margin-top:-22px;background:radial-gradient(circle at 50% 50%,#fff 0 10%,transparent 11%),conic-gradient(from 0deg,#ff6b6b,orange,gold,#32cd32,#00ced1,#4169e1,#9370db,#ff1493,#ff6b6b);box-shadow:0 0 0 4px var(--bg),0 0 24px rgba(255,255,255,.18);position:relative;animation:spin 14s linear infinite}
+.orb::after{content:"";position:absolute;inset:4px;border-radius:50%;background:radial-gradient(circle,rgba(20,20,22,.2),rgba(20,20,22,.75));}
+
+/* Sheet */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:20;display:flex;align-items:flex-end;animation:fade .18s ease-out}
+.sheet{background:var(--sheet);border-top:1px solid var(--line);width:100%;max-height:90%;overflow-y:auto;border-radius:26px 26px 0 0;padding:10px 20px 26px;display:flex;flex-direction:column;gap:14px;animation:up .24s cubic-bezier(.2,.8,.2,1)}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line-2);align-self:center}
+.sheet h3{margin:0;font-size:20px;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+.sheet p{margin:0;color:var(--text-2)}
+.sheet .sub{color:var(--muted);font-size:13px}
+.field{display:flex;gap:8px}
+.field input{flex:1;min-width:0;font:inherit;font-size:14px;padding:11px 14px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--text)}
+.samples{display:flex;flex-direction:column;gap:8px}
+.sample{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);text-align:left;width:100%}
+.sample:hover{border-color:var(--line-2)}
+.sample .lg{background:#fff;border-radius:999px;padding:4px 8px;flex:none;display:flex}
+.sample .lg img{height:12px;width:auto;display:block}
+.sample .u{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1;font-family:var(--mono)}
+.err{color:var(--red);font-size:13px}
+.srcs{display:flex;flex-wrap:wrap;gap:6px}
+.srcs span{font-size:12px;color:var(--muted);background:var(--surface);border-radius:999px;padding:3px 9px}
+
+.checks{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.check{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:10px 12px;font-size:13.5px}
+.check+.check{border-top:1px solid var(--line)}
+.check .v{color:var(--muted);font-size:12.5px;text-align:right}
+.check.pending{color:var(--muted)}
+.dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none}
+.dot.ok{background:rgba(158,227,210,.15);color:var(--mint)}
+.dot.warn{background:rgba(249,172,105,.15);color:var(--sunset)}
+.dot.bad{background:rgba(255,123,123,.15);color:var(--red)}
+.dot.unk{background:var(--surface-2);color:var(--muted)}
+.dot.spin{border:2px solid var(--line-2);border-top-color:var(--coral);animation:spin .7s linear infinite}
+.dot.empty{border:2px solid var(--line)}
+.preview{display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center}
+.preview img{width:84px;height:64px;border-radius:10px;object-fit:cover}
+.preview b{display:block;font-size:16px}
+
+.pref{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.pref.off{opacity:.6}
+.pref q{font-size:17px;font-weight:500;line-height:1.3;letter-spacing:-.01em;quotes:"\201C" "\201D"}
+.src{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pref .ev{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--text-2)}
+.pref .ev b{color:var(--text)}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.pill{text-decoration:none;color:var(--text);font-size:12.5px;font-weight:500;padding:6px 11px;border-radius:999px;border:1px solid var(--line-2);background:transparent;text-align:left}
+.pill:hover{border-color:var(--muted)}
+.pill.danger{color:var(--red)}
+.pill.primary{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.privacy{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--text-2);background:var(--surface);border-radius:12px;padding:10px 12px}
+.privacy>img{width:20px;height:20px;border-radius:50%;object-fit:cover;flex:none}
+.privacy.warn{background:rgba(249,172,105,.1);color:var(--sunset)}
+.pref textarea{font:inherit;font-size:14px;border:1px solid var(--line-2);border-radius:12px;padding:8px 10px;resize:vertical;min-height:54px;background:var(--bg-2);color:var(--text)}
+.diff{font-family:var(--mono);font-size:11.5px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.diff div{padding:5px 10px}
+.diff .rm{background:rgba(255,123,123,.1);color:#ffb3b3}
+.diff .ad{background:rgba(158,227,210,.1);color:var(--mint)}
+.diff .fn{background:var(--surface);color:var(--muted)}
+
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:14px;background:var(--surface);border-radius:14px;padding:12px 14px}
+.kv .k{color:var(--muted);display:flex;align-items:center;gap:6px}
+.kv .v{font-weight:600;text-align:right}
+.kv .total{border-top:1px solid var(--line);padding-top:6px}
+
+.chat{background:#0b141a;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.chat .hd{font-size:11.5px;color:var(--muted);text-align:center}
+.msg{background:#005c4b;color:#e9fdf5;border-radius:14px 14px 4px 14px;padding:10px 12px;font-size:13.5px;align-self:flex-end;max-width:92%;display:flex;flex-direction:column;gap:6px}
+.msg .lk{background:rgba(0,0,0,.22);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.msg .lk b{font-size:13px}
+.msg .lk small{opacity:.75}
+
+.tripp{display:flex;gap:10px;align-items:flex-start}
+.tripp .orb{width:30px;height:30px;margin:0;box-shadow:none;flex:none}
+.bubble{background:var(--surface);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:11px 13px;font-size:13.5px;color:var(--text-2);display:flex;flex-direction:column;gap:7px}
+.bubble b{color:var(--text)}
+.bubble ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:5px}
+.cites{display:flex;flex-wrap:wrap;gap:6px}
+.cites span{font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+
+.toast{position:absolute;left:14px;right:14px;top:48px;z-index:40;background:#fff;color:var(--ink);border-radius:16px;padding:11px 14px;font-size:13.5px;display:flex;gap:10px;align-items:center;box-shadow:0 14px 34px -10px rgba(0,0,0,.7);animation:drop .25s ease-out}
+.toast img{width:26px;height:26px;border-radius:50%;flex:none;object-fit:cover}
+.toast button{margin-left:auto;color:var(--coral-deep);font-weight:700;flex:none}
+.toast .file{font-family:var(--mono);font-size:12px;background:#f1f1f1;border-radius:5px;padding:1px 5px}
+
+/* Friend (web link) view */
+.urlbar{margin:0 14px 6px;background:var(--surface-2);border-radius:10px;padding:7px 12px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;justify-content:center;font-family:var(--mono)}
+.invite{display:flex;gap:10px;align-items:center}
+.invite img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.invite p{margin:0;font-size:14px;color:var(--text-2)}
+.invite p b{color:var(--text)}
+.rule{background:var(--deep);border:1px solid rgba(158,227,210,.25);color:var(--mint);border-radius:14px;padding:11px 13px;font-size:13.5px}
+.reasons{display:flex;flex-wrap:wrap;gap:6px}
+.reasons button{font-size:12.5px;padding:5px 10px;border-radius:999px;background:var(--surface-2);color:var(--text-2)}
+.reasons button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.growth{border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(160deg,rgba(245,121,99,.12),rgba(10,41,44,.5))}
+.growth h4{margin:0;font-size:16px;letter-spacing:-.01em}
+.growth p{margin:0;font-size:13px;color:var(--text-2)}
+
+/* Decided */
+.hero-dec{border-radius:20px;overflow:hidden;background:var(--surface);border:1px solid var(--line)}
+.hero-dec>img{width:100%;height:170px;object-fit:cover;display:block}
+.hero-dec .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.hero-dec h3{margin:0;font-size:24px;font-weight:600;letter-spacing:-.025em;line-height:1.05}
+.nextlist{display:flex;flex-direction:column;gap:10px}
+.nx{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13.5px;align-items:start;color:var(--text-2)}
+.nx b{color:var(--text)}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.tools span{font-size:11.5px;font-weight:600;border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;color:var(--text-2)}
+
+/* v3: what matters, compare, remove, link control */
+.mrow{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:8px 0}
+.mrow+.mrow{border-top:1px solid var(--line)}
+.mrow>img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.mrow .mt{display:flex;flex-direction:column;gap:5px;min-width:0}
+.mrow .mt b{font-weight:500;font-size:13.5px;color:var(--text)}
+.mrow.off .mt b{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+.rel{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:2px;align-self:flex-start}
+.rel button{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;color:var(--text-2)}
+.rel button[aria-pressed="true"]{background:var(--mint);color:var(--ink)}
+.rel button.no[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.theirs{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px;align-self:flex-start}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}
+.mchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 10px 3px 3px;border-radius:999px;border:1px solid var(--line-2);color:var(--text-2)}
+.mchip img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.mchip.off{color:var(--muted)}
+.waitnote{font-size:12.5px;color:var(--muted);padding-top:8px;border-top:1px solid var(--line)}
+.needs{display:flex;flex-wrap:wrap;gap:6px}
+.cmp{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.cmp .crow{padding:10px 10px 11px;border-top:1px solid var(--line)}
+.cmp .crow:first-child{border-top:0}
+.cmp .clab{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px}
+.cmp .clab span{text-transform:none;letter-spacing:0;font-weight:500;font-family:var(--mono);font-size:10.5px}
+.cmp .cells{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:8px}
+.cmp .cell{font-size:12.5px;color:var(--text-2);min-width:0;line-height:1.35}
+.cmp .cell b{color:var(--text);font-size:14px;font-weight:600}
+.cmp .cell.best b{color:var(--mint)}
+.cmp .head img{width:100%;height:58px;object-fit:cover;border-radius:10px;display:block;margin-bottom:6px}
+.cmp .head b{font-size:12.5px;line-height:1.2;display:block}
+.cmp .head small{font-size:11px;color:var(--muted)}
+.cmp .sig{font-size:11.5px;padding:2px 7px 2px 4px}
+.cmp .warnc{color:var(--sunset)}
+.cmp .okc{color:var(--mint)}
+.rm-btn{position:absolute;right:10px;top:10px;width:28px;height:28px;border-radius:50%;background:rgba(10,10,10,.6);color:#fff;display:grid;place-items:center;backdrop-filter:blur(6px)}
+.rm-btn:hover{background:rgba(10,10,10,.85)}
+.ghost{display:flex;align-items:center;gap:10px;justify-content:space-between;border:1px dashed var(--line-2);border-radius:14px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
+.ghost b{color:var(--text-2);font-weight:500}
+.ext{font-size:12.5px;color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;gap:5px;align-self:flex-start}
+.ext:hover{color:var(--text)}
+.ext span{color:var(--muted)}
+.trow{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;font-size:12.5px;padding:3px 0}
+.trow img{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.trow .st{color:var(--muted);font-size:12px}
+.trow .st.ok{color:var(--mint)}
+.linkrow{display:flex;flex-direction:column;gap:8px;padding-top:9px;border-top:1px solid var(--line)}
+.linkrow .u{font-family:var(--mono);font-size:11.5px;color:var(--text-2);display:flex;justify-content:space-between;gap:8px}
+.linkrow .u.off{color:var(--muted);text-decoration:line-through}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+@keyframes drop{from{transform:translateY(-12px);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glow{from{background:rgba(158,227,210,.28)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+@media (max-width:1100px){
+  .stage{grid-template-columns:minmax(0,1fr) 410px;gap:28px}
+  .side{grid-column:1;grid-row:2;position:static}
+  .notes{grid-row:1}
+  .device-wrap{grid-column:2;grid-row:1 / span 2}
+}
+@media (max-width:760px){
+  body{padding-block:16px 32px}
+  .stage{grid-template-columns:minmax(0,1fr);gap:22px}
+  .notes,.side,.device-wrap{grid-column:1;grid-row:auto;position:static}
+  .notes{order:1}.device-wrap{order:2}.side{order:3}
+  .device{width:100%;max-width:410px;height:760px;border-width:6px;border-radius:36px}
+}
+</style>
+
+<div class="stage">
+  <aside class="notes" aria-label="Prototype guide">
+    <div class="brand">
+      <div class="logo">traveler<span class="md">.md</span> <span class="beta">WISHLIST CONCEPT</span></div>
+      <h1>Pick a stay <span class="grad">together.</span></h1>
+      <p>A clickable concept for the trip wishlist. Alex saves stays from three sites, the group picks one, and it all lands in Lisbon's <b>trip.md</b> so every connected AI knows the plan.</p>
+      <a class="linkbtn" href="writeup.html">Read the write-up</a>
+    </div>
+    <div class="ctrl">
+      <div class="label">How to use</div>
+      <p class="hint">Tap through the phone as Alex, or jump to a step below. Switch to Riley to vote as a friend. Design notes explain each step.</p>
+    </div>
+    <div class="ctrl">
+      <div class="label">The journey · click to jump</div>
+      <ol class="steps" id="steps"></ol>
+    </div>
+    <div class="ctrl">
+      <div class="label">Viewing as</div>
+      <div class="seg" id="viewseg"></div>
+      <p class="hint" id="viewhint"></p>
+      <button class="linkbtn" id="reset" type="button">Reset prototype</button>
+    </div>
+  </aside>
+
+  <div class="device-wrap">
+    <div class="device" id="device">
+      <div class="screen" id="screen"></div>
+      <div id="dock"></div>
+      <div id="sheet"></div>
+      <div id="toast"></div>
+    </div>
+    <div class="device-cap">Mobile · all data, imports and votes are simulated</div>
+  </div>
+
+  <aside class="side" aria-label="Design notes">
+    <div class="why" id="why"></div>
+  </aside>
+</div>
+
+<script>
+const IMG = /*__IMG__*/{};
+
+// ---------- Data ----------
+const BUDGET = 1200, PEOPLE = 4;
+const STAYS = {
+  garden:   {id:'garden', name:'Garden Apartment', provider:'Airbnb', logo:'logoAirbnb', img:'imgGarden', base:1080, feeMissing:false,
+             url:'airbnb.com/rooms/48213377', lat:38.7152, lng:-9.1508, from:'From a link Sam dropped in the group chat',
+             facts:[['bed','2 bedrooms'],['home','Residential street'],['walk','15 min walk to centre']]},
+  central:  {id:'central', name:'Central Residence', provider:'Booking.com', logo:'logoBooking', img:'imgCentral', base:1170, feeMissing:false,
+             url:'booking.com/hotel/pt/central-residence-lisboa.html', lat:38.7105, lng:-9.1390, src:'Copied link',
+             facts:[['bed','2 bedrooms'],['pin','Central location'],['noise','Reviews mention street noise']]},
+  riverside:{id:'riverside', name:'Riverside Flat', provider:'Expedia', logo:'logoExpedia', img:'imgRiverside', base:990, feeMissing:true,
+             url:'expedia.com/Lisbon-Hotels-Riverside-Flat.h90412', lat:38.7059, lng:-9.1425, src:'Shared from the Expedia app',
+             facts:[['bed','2 bedrooms'],['food','Near restaurants'],['q','Quietness unknown']]}
+};
+const FIT = {
+  garden:   {quiet:{s:'match', t:'Likely quiet', ev:'The listing describes a residential street.'},
+             walk:{s:'partial', t:'15 min to centre', ev:'The centre is a 15-minute walk. The listing doesn’t mention cafés close by.'}},
+  central:  {quiet:{s:'conflict', t:'May be noisy at night', ev:'Guest reviews on Booking.com mention street noise.'},
+             walk:{s:'match', t:'Walkable', ev:'Central location, so cafés and restaurants are likely steps away.'}},
+  riverside:{quiet:{s:'unknown', t:'Quiet: unknown', ev:'Neither the listing nor its reviews say anything about noise at night.'},
+             walk:{s:'match', t:'Near restaurants', ev:'The listing says it is near restaurants.'}}
+};
+// What each stay is chosen for, used to name the tradeoff in a tie.
+const ANGLE = {garden:{k:'quiet', w:'quiet'}, central:{k:'walk', w:'central'}, riverside:{k:'walk', w:'near restaurants'}};
+const PEOPLE_INFO = { alex:{name:'Alex',av:'av1'}, jordan:{name:'Jordan',av:'av2'}, sam:{name:'Sam',av:'av3'}, riley:{name:'Riley',av:'av4'} };
+const ORDER = ['alex','jordan','sam','riley'];
+const PREF_KEY = {quiet:'stay.vibe', walk:'neighborhood.walkability'};
+
+const ICON = {
+  bed:'M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8M2 16h20M6 10V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4',
+  home:'M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  walk:'M13 4a1.5 1.5 0 1 0 .01 0M10 21l2-6 3 3v3M9 12l2-4 4 2 2 3M11 8l-2 5',
+  pin:'M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12zM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+  noise:'M11 5L6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13',
+  food:'M4 3v7a3 3 0 0 0 6 0V3M7 3v18M17 21V3c-2.2 0-4 2.7-4 6v4h4',
+  q:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9a2.5 2.5 0 0 1 4.9.7c0 1.7-2.4 2.3-2.4 3.8M12 17h.01',
+  check:'M5 12.5l4.5 4.5L19 7.5',
+  alert:'M12 8v5M12 16.5h.01M10.3 3.9L2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+  plus:'M12 5v14M5 12h14',
+  share:'M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6',
+  lock:'M6 11h12v10H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
+  chev:'M9 6l6 6-6 6',
+  back:'M15 6l-6 6 6 6',
+  link:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
+  tilde:'M5 13c2-3 4-3 7 0s5 3 7 0',
+  cal:'M4 6h16v15H4zM4 10h16M8 3v4M16 3v4',
+  user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+  heart:'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z',
+  moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
+  pen:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  file:'M6 3h8l4 4v14H6zM14 3v4h4',
+  list:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
+  plane:'M10 14l-6-2 1-2 7 1 4-5a1.5 1.5 0 0 1 2 2l-5 4 1 7-2 1-2-6',
+  plug:'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
+  gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1',
+  home2:'M3 11l9-8 9 8M5 9.5V21h14V9.5',
+  x:'M6 6l12 12M18 6L6 18'
+};
+const ic = (k, s=14, w=1.8) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="${ICON[k]}"/></svg>`;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const eur = n => '€' + Math.round(n).toLocaleString('en-US');
+const eur2 = n => '€' + (Math.round(n*100)/100).toLocaleString('en-US',{minimumFractionDigits: n%1 ? 2 : 0, maximumFractionDigits:2});
+const avImg = (p, cls='av') => `<img class="${cls}" src="${IMG[PEOPLE_INFO[p].av]}" alt="${PEOPLE_INFO[p].name}">`;
+const list = a => a.length <= 1 ? a.join('') : a.slice(0,-1).join(', ') + ' and ' + a[a.length-1];
+
+// ---------- State ----------
+const fresh = () => ({
+  view:'alex', screen:'trip', mode:'sections',
+  saved:['garden'],
+  sheet:null,
+  fee:null,
+  prefs:{
+    quiet:{text:'I prefer somewhere quiet at night.', paused:false, deleted:false},
+    walk:{text:'I like being able to walk to cafés and restaurants.', paused:false, deleted:false}
+  },
+  wrongFor:{},
+  shared:false,
+  votes:{alex:[], jordan:[], sam:[], riley:[]},
+  notes:{},
+  rileyReason:[], rileyDone:false,
+  decided:null, flash:null, memorySeen:false, mdSeen:null, mdOpened:false,
+  removed:[], linkOn:true, linkV:1, seen:{jordan:false, sam:false, riley:false}, shares:[], mattersOpen:null, startSeen:false, compareSeen:false,
+  clock:41,
+  log:[{t:'10:38', text:'Alex created trip.md for Lisbon'}, {t:'10:40', text:'Garden Apartment added from Airbnb (link from the group chat)'}]
+});
+let S = fresh();
+let timers = [];
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+function log(text){ S.clock += 1 + (S.clock % 2); const h = 10 + Math.floor(S.clock/60), m = S.clock % 60; S.log.push({t:`${h}:${String(m).padStart(2,'0')}`, text}); }
+
+// ---------- Derived ----------
+const total = id => { const s = STAYS[id]; return s.feeMissing ? (S.fee == null ? null : s.base + S.fee) : s.base; };
+const known = id => total(id) != null;
+function sortedSaved(){
+  return [...S.saved].sort((a,b) => { const ta=total(a), tb=total(b); if(ta==null&&tb==null) return 0; if(ta==null) return 1; if(tb==null) return -1; return ta-tb; });
+}
+const inFor = id => ORDER.filter(p => S.votes[p].includes(id));
+const responded = () => ORDER.filter(p => S.votes[p].length);
+function fitFor(id, key){
+  const p = S.prefs[key];
+  if (p.deleted || p.paused) return null;
+  if (S.wrongFor[id+':'+key]) return {s:'match', t: key==='quiet' ? 'Quiet enough' : 'Walkable enough', ev:'You marked this flag as wrong for this stay.'};
+  return FIT[id][key];
+}
+function groupStatus(){
+  const counts = S.saved.map(id => ({id, n:inFor(id).length})).sort((a,b)=>b.n-a.n || (total(a.id)??9e9)-(total(b.id)??9e9));
+  const top = counts[0], second = counts[1];
+  return {counts, top, tie: !!(second && top && second.n === top.n && top.n > 0), waiting: ORDER.filter(p => !S.votes[p].length)};
+}
+
+const CRIT = {quiet:'Quiet at night', walk:'Walk to cafés and the centre', price:'Lowest total price'};
+const slug = () => 'traveler.md/t/lisbon-may' + (S.linkV>1 ? '-' + S.linkV : '');
+// Who cares about each criterion on this trip: Alex's active traveler.md prefs plus what friends chose to share.
+function careFor(key){
+  const who = [];
+  if (S.prefs[key] && !S.prefs[key].paused && !S.prefs[key].deleted) who.push('alex');
+  S.shares.filter(x => x.key === key).forEach(x => { if (!who.includes(x.who)) who.push(x.who); });
+  return who;
+}
+function provUrl(id){ const p = STAYS[id].provider; return p==='Booking.com' ? 'https://www.booking.com/' : p==='Airbnb' ? 'https://www.airbnb.com/' : 'https://www.expedia.com/'; }
+
+// ---------- trip.md ----------
+function tripMd(){
+  const L = [];
+  const acc = ['- Need 2 bedrooms for 4 adults, €1,200 total for the stay.'];
+  sortedSaved().forEach(id => {
+    const s = STAYS[id], t = total(id), ins = inFor(id);
+    const price = t == null ? `${eur(s.base)} plus a property fee Expedia doesn’t show (fits budget if ≤ ${eur(BUDGET - s.base)})` : `${eur(t)} total incl. fees${s.feeMissing ? ` (${eur(S.fee)} fee added by Alex)` : ''}`;
+    const grp = S.shared ? ` ${ins.length} of 4 happy${ins.length ? ': ' + ins.map(p=>PEOPLE_INFO[p].name).join(', ') : ''}.` : '';
+    acc.push(`- ${S.decided===id?'Chosen':'Option'}: ${s.name} (${s.provider}), ${price}. ${s.facts.slice(1).map((f,i)=>i?f[1].charAt(0).toLowerCase()+f[1].slice(1):f[1]).join('; ')}.${grp}`);
+  });
+  S.removed.forEach(id => acc.push(`- Removed: ${STAYS[id].name} (${STAYS[id].provider}). Kept here in case we change our minds.`));
+  if (S.decided) acc.push(`- Decided: ${STAYS[S.decided].name}, chosen by ${inFor(S.decided).length} of 4. Next: book on ${STAYS[S.decided].provider}.`);
+  else if (S.shared) acc.push('- Still open: group voting closes Fri, Oct 9, 8 pm.');
+  const wm = [];
+  ['quiet','walk','price'].forEach(k => { const w = careFor(k); if (w.length) wm.push(`- ${CRIT[k]}: matters to ${list(w.map(p=>PEOPLE_INFO[p].name))}.`); });
+  Object.keys(S.prefs).forEach(k => { if (S.prefs[k].paused && !S.prefs[k].deleted) wm.push(`- Not this trip: ${CRIT[k].toLowerCase()} (Alex).`); });
+  L.push('# Trip: Lisbon', '', '## Status', `- ${S.decided ? 'Booking' : 'Planning'}`, '', '## Summary', '- Long weekend in Lisbon with three friends.', '',
+    '## Dates', '- May 14–17, 2027 (3 nights).', '', '## Travelers', '- Alex (organizer), Jordan, Sam and Riley. 4 adults.', '',
+    '## What matters this trip', ...(wm.length ? wm : ['- Nothing marked yet.']), '', '## Accommodation', ...acc, '');
+  const tp = [];
+  Object.keys(S.wrongFor).forEach(k => { const [id,key] = k.split(':'); tp.push(`- ${STAYS[id].name}: ${key==='quiet'?'noise':'walkability'} is fine for Alex.`); });
+  if (tp.length) L.push('## Notes', ...tp, '');
+  return L;
+}
+function mdHtml(){
+  const lines = tripMd();
+  const seen = S.mdSeen ? new Set(S.mdSeen) : null;
+  const out = lines.map(l => {
+    const isNew = seen && l.trim() && !seen.has(l);
+    const cls = (l.startsWith('#') ? 'h' : /^- (Planning|Booking|Chosen|Decided|Still open|Removed|Not this trip)/.test(l) ? 'k' : '') + (isNew ? ' new' : '');
+    return `<span class="${cls}">${esc(l) || '&nbsp;'}</span>`;
+  }).join('');
+  S.mdSeen = lines;
+  return out;
+}
+
+// ---------- Rendering ----------
+const $ = id => document.getElementById(id);
+function render(){
+  renderSteps(); renderView(); renderWhy();
+  const scr = $('screen'), y = scr.scrollTop;
+  if (S.view === 'riley') scr.innerHTML = rileyScreen();
+  else if (S.screen === 'decided') scr.innerHTML = decidedScreen();
+  else scr.innerHTML = tripScreen();
+  scr.scrollTop = y;
+  $('dock').innerHTML = dock();
+  $('sheet').innerHTML = S.sheet ? `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true">${sheetHtml()}</div></div>` : '';
+  if (S.flash){ const el = document.querySelector(`[data-card="${S.flash}"]`); if (el) el.scrollIntoView({block:'center'}); }
+}
+const statusbar = () => `<div class="statusbar"><span>9:41</span><i></i></div>`;
+
+function ticket(){
+  const dec = S.decided;
+  return `<div class="ticket ${dec?'chosen':''}"><div class="main">
+      <div class="dates"><span>May 14 – May 17, 2027</span><span class="badge">${dec ? 'BOOKING' : 'PLANNING'}</span></div>
+      <h2>Lisbon · May 2027</h2>
+    </div><div class="stub"><b>3</b><span>NIGHTS</span></div></div>`;
+}
+
+function tripScreen(){
+  const n = S.saved.length;
+  const full = S.saved.filter(id => known(id) && total(id) <= BUDGET).length;
+  const inc = S.saved.filter(id => !known(id)).length;
+  const summary = n ? `${n} stay${n>1?'s':''} · ${n>1?'all fit':'fits'} 4 adults in 2 bedrooms · ${full} priced within budget${inc ? ` · ${inc} price incomplete` : ''}` : '';
+  const head = `${statusbar()}<div class="app">
+    <div class="topbar"><span class="back">${ic('back',16)} Lisbon · May 2027</span><span class="tb-r"><span class="iconbtn">${ic('moon',14)}</span>${avImg('alex','me')}</span></div>
+    ${ticket()}
+    <div class="toggles">
+      <div class="mode" role="group" aria-label="View"><button data-act="mode" data-m="sections" aria-pressed="${S.mode==='sections'}">${ic('list',12,2)}Sections</button><button data-act="mode" data-m="compare" aria-pressed="${S.mode==='compare'}">Compare</button><button data-act="mode" data-m="md" aria-pressed="${S.mode==='md'}">${ic('file',12,2)}.md</button></div>
+      <button class="chipbtn ${S.saved.length>=2 && !S.shared ? 'coral':''}" data-act="openShare">${ic('share',13,2)}${S.shared?'Shared':'Share'}</button>
+    </div>`;
+  if (S.mode === 'md') return head + mdView() + `</div>`;
+  if (S.mode === 'compare') return head + compareView() + `</div>`;
+  return head + `
+    ${mattersSection()}
+    <div class="sec"><div class="hd"><span class="label">Summary</span><span class="pen">${ic('pen',13)}</span></div>
+      <p>Long weekend in Lisbon with three friends.</p>
+      <div class="needs"><span class="req">${ic('cal',12)} May 14–17</span><span class="req">${ic('user',12)} 4 adults</span><span class="req">${ic('bed',12)} 2 bedrooms</span><span class="req tnum">€1,200 for the stay</span></div></div>
+    ${travelersSection()}
+    ${S.shared ? banner() : ''}
+    <div class="sechead"><h3>Stays · shortlist</h3><button class="addlink" data-act="openAdd">${ic('plus',14,2.2)} Add a stay</button></div>
+    ${summary ? `<p class="summary tnum">${summary}</p>` : ''}
+    ${n >= 2 ? mapStrip() : ''}
+    ${sortedSaved().map(id => card(id, 'alex')).join('')}
+    ${S.removed.map(id => `<div class="ghost"><span><b>${STAYS[id].name}</b> · removed by Alex</span><button class="pill" data-act="restoreStay" data-id="${id}">Restore</button></div>`).join('')}
+    ${n < 3 ? `<button class="card" data-act="openAdd" style="border-style:dashed;padding:18px;align-items:center;gap:6px;color:var(--muted)">${ic('link',18)}<b style="color:var(--text)">Paste a link from any booking site</b><span style="font-size:12.5px">Airbnb, Booking.com, Expedia, Vrbo, or a Reel</span></button>` : ''}
+    ${inc && n>=2 ? `<p class="summary" style="margin:0">Sorted by total price. Incomplete prices go last until the fee is known.</p>`:''}
+  </div>`;
+}
+
+const mattersCollapsed = () => S.mattersOpen===false || (S.mattersOpen!==true && (S.saved.length>=2 || S.shared));
+function mattersSection(){
+  if (mattersCollapsed()){
+    const mine = ['quiet','walk'].filter(k => !S.prefs[k].deleted).map(k => `<span class="mchip ${S.prefs[k].paused?'off':''}">${avImg('alex','')}${CRIT[k]}${S.prefs[k].paused?' · not this trip':''}</span>`).join('');
+    const theirs = S.shares.map(x => `<span class="mchip">${avImg(x.who,'')}${esc(x.text)}</span>`).join('');
+    return `<div class="sec" id="matters"><div class="hd"><span class="label">What matters this trip</span><button class="pill" data-act="mattersToggle" data-v="open">Edit</button></div>
+      <div class="mchips">${mine}${theirs}</div></div>`;
+  }
+  const mine = ['quiet','walk'].filter(k => !S.prefs[k].deleted).map(k => {
+    const p = S.prefs[k], on = !p.paused;
+    return `<div class="mrow ${on?'':'off'}">${avImg('alex','')}<div class="mt"><b>${esc(p.text)}</b>
+      <span class="src">${ic('lock',10,2)} your traveler.md › ${PREF_KEY[k]} · only you see this</span>
+      <div class="rel" role="group" aria-label="Does this matter on this trip?"><button data-act="relevance" data-k="${k}" data-v="on" aria-pressed="${on}">Matters</button><button class="no" data-act="relevance" data-k="${k}" data-v="off" aria-pressed="${!on}">Not this trip</button></div></div></div>`;
+  }).join('');
+  const theirs = S.shares.map(x => `<div class="mrow">${avImg(x.who,'')}<div class="mt"><b>${esc(x.text)}</b><span class="src">${PEOPLE_INFO[x.who].name} · ${esc(x.src)}</span><span class="theirs">${PEOPLE_INFO[x.who].name}’s to change</span></div></div>`).join('');
+  const quiet = ['jordan','sam','riley'].filter(p => !S.shares.some(x => x.who === p));
+  const note = !S.shared ? 'Jordan, Sam and Riley can add what matters to them when they vote. Nothing from their traveler.md is shared unless they choose.'
+    : quiet.length ? `Waiting on ${list(quiet.map(p=>PEOPLE_INFO[p].name))}. Sharing is optional.` : '';
+  return `<div class="sec" id="matters"><div class="hd"><span class="label">What matters this trip</span><button class="pill" data-act="mattersToggle" data-v="close">Done</button></div>
+    <p>Your saved preferences, as suggestions. Mark what matters for Lisbon. These become the rows in Compare.</p>
+    ${mine}${theirs}${note ? `<div class="waitnote">${note}</div>` : ''}</div>`;
+}
+
+function travelersSection(){
+  if (!S.shared) return `<div class="sec"><div class="hd"><span class="label">Travelers</span><span class="pen">${ic('pen',13)}</span></div>
+    <div class="crew"><div class="avs">${ORDER.map(p => `<img class="av ${p!=='alex'?'pending':''}" src="${IMG[PEOPLE_INFO[p].av]}" alt="${PEOPLE_INFO[p].name}">`).join('')}</div><span>You · Jordan, Sam and Riley not invited yet</span></div></div>`;
+  const st = p => S.votes[p].length ? ['ok','Voted'] : S.seen[p] ? ['','Opened, hasn’t voted'] : ['','Hasn’t opened the link'];
+  const rows = ['jordan','sam','riley'].map(p => { const [c,t] = st(p); return `<div class="trow">${avImg(p,'')}<span>${PEOPLE_INFO[p].name}</span><span class="st ${c}">${t}</span></div>`; }).join('');
+  return `<div class="sec"><div class="hd"><span class="label">Travelers</span><span class="src">who’s seen it</span></div>
+    <div class="trow">${avImg('alex','')}<span>You (organizer)</span><span class="st ${S.votes.alex.length?'ok':''}">${S.votes.alex.length?'Voted':'Not voted yet'}</span></div>${rows}
+    <div class="linkrow"><div class="u ${S.linkOn?'':'off'}"><span>${slug()}</span><span>${S.linkOn ? 'until Fri 8 pm' : 'off'}</span></div>
+      <div class="acts">${S.linkOn ? `<button class="pill" data-act="linkOff">Turn off link</button>` : `<button class="pill" data-act="linkOn">Turn back on</button>`}<button class="pill" data-act="linkNew">Make a new link</button></div></div></div>`;
+}
+
+function compareView(){
+  const ids = sortedSaved();
+  if (ids.length < 2) return `<div class="sec"><p>Save at least two stays to compare them side by side.</p><button class="btn sm" data-act="openAdd" style="align-self:flex-start">Add a stay</button></div>`;
+  const n = ids.length;
+  const row = (label, cells, right='') => `<div class="crow"><div class="clab">${label}${right?`<span>${right}</span>`:''}</div><div class="cells" style="--n:${n}">${cells}</div></div>`;
+  const known_ = ids.filter(known).map(total); const minT = known_.length ? Math.min(...known_) : null;
+  const glyph = s => s==='match' ? ic('check',11,2.4) : s==='conflict' ? ic('alert',11,2.2) : s==='unknown' ? ic('q',11,2) : ic('tilde',11,2.2);
+  let html = row('', ids.map(id => `<div class="cell head"><img src="${IMG[STAYS[id].img]}" alt=""><b>${STAYS[id].name}</b><small>${STAYS[id].provider}</small></div>`).join(''));
+  const priceCares = careFor('price');
+  html += row('Total · 3 nights, fees', ids.map(id => { const t = total(id); return `<div class="cell ${t!=null && t===minT && priceCares.length ? 'best':''}">${t==null ? `<b>${eur(STAYS[id].base)}+</b><br><span class="warnc">fee unknown</span>` : `<b class="tnum">${eur(t)}</b><br>${eur2(t/PEOPLE)} each`}</div>`; }).join(''), priceCares.length ? 'matters to ' + priceCares.map(p=>PEOPLE_INFO[p].name).join(', ') : '');
+  html += row('Budget €1,200', ids.map(id => { const t = total(id); return `<div class="cell">${t==null ? `<span class="warnc">Fits if fee ≤ ${eur(BUDGET-STAYS[id].base)}</span>` : t<=BUDGET ? `<span class="okc">${eur(BUDGET-t)} under</span>` : `<span style="color:var(--red)">${eur(t-BUDGET)} over</span>`}</div>`; }).join(''));
+  html += row('Sleeps 4 · 2 bedrooms', ids.map(() => `<div class="cell okc">${ic('check',12,2.4)} Yes</div>`).join(''), 'trip needs');
+  ['quiet','walk'].forEach(k => {
+    const w = careFor(k); if (!w.length) return;
+    html += row(CRIT[k], ids.map(id => { const f = S.wrongFor[id+':'+k] ? {s:'match', t:'Fine (you said)'} : FIT[id][k]; return `<div class="cell"><span class="sig ${f.s}">${glyph(f.s)}${esc(f.t)}</span></div>`; }).join(''), 'matters to ' + w.map(p=>PEOPLE_INFO[p].name).join(', '));
+  });
+  if (S.shared) html += row('Group', ids.map(id => { const ins = inFor(id); return `<div class="cell"><b>${ins.length} of 4</b><br>${ins.length ? ins.map(p=>PEOPLE_INFO[p].name).join(', ') : 'no one yet'}</div>`; }).join(''));
+  const off = ['quiet','walk'].filter(k => !careFor(k).length);
+  return `<div class="cmp">${html}</div>
+    <p class="summary" style="margin:0">Rows come from trip.md: what the trip needs, plus what matters to someone on this trip.${off.length ? ` Hidden because nobody marked it: ${off.map(k=>CRIT[k].toLowerCase()).join(', ')}.` : ''}</p>`;
+}
+function mdView(){
+  return `<div class="mdfile"><div class="fh"><b>trip.md</b><span>Lisbon · auto-saved</span></div><pre>${mdHtml()}</pre></div>
+    <p class="summary" style="margin:0">The file Claude, ChatGPT and your other connected tools read. Highlighted lines changed since you last looked.</p>
+    <div class="sec"><div class="hd"><span class="label">History</span><span class="src">who changed what</span></div>
+      <div class="audit">${S.log.slice().reverse().slice(0,8).map(l => `<div class="row"><time>${l.t}</time><span>${esc(l.text)}</span></div>`).join('')}</div></div>`;
+}
+
+function banner(){
+  const g = groupStatus();
+  const names = ps => ps.map(p => p==='alex' ? 'you' : PEOPLE_INFO[p].name);
+  if (!responded().length) return `<div class="banner wait"><p><b>Link sent to the group.</b> Everyone taps the stays they'd be happy with. Picks show up here.</p><small>Voting closes Fri, Oct 9 at 8 pm</small></div>`;
+  const top = g.top, st = STAYS[top.id];
+  const waitTxt = g.waiting.length ? `Waiting on ${list(names(g.waiting))}.` : 'Everyone has voted.';
+  if (g.tie){
+    const ids = g.counts.filter(c => c.n === top.n).map(c => c.id);
+    const angles = [...new Set(ids.map(id => ANGLE[id].w))], keys = new Set(ids.map(id => ANGLE[id].k));
+    const why = angles.length === 2 ? `It comes down to ${angles[0]} versus ${angles[1]}.` : '';
+    const said = S.shares.filter(x => keys.has(x.key)).map(x => `${PEOPLE_INFO[x.who].name} shared “${esc(x.text)}”`);
+    const nudgeT = g.waiting.filter(p=>p!=='alex');
+    return `<div class="banner wait"><p><b>Tie:</b> ${list(ids.map(id=>STAYS[id].name))} (${top.n} of 4 each). ${why} ${said.length ? list(said)+'.' : ''}</p><small>${waitTxt} ${g.waiting.length ? 'The next vote may settle it, or you can pick one.' : 'As organizer, you break the tie.'}</small>
+      <div class="row" style="flex-wrap:wrap">${ids.map(id => `<button class="btn white sm" data-act="askChoose" data-id="${id}">Choose ${STAYS[id].name.split(' ')[0]}</button>`).join('')}${nudgeT.length ? `<button class="btn ghost sm" data-act="nudge">Nudge ${esc(list(nudgeT.map(p=>PEOPLE_INFO[p].name)))}</button>`:''}</div></div>`;
+  }
+  const all = top.n === 4;
+  const nudge = g.waiting.filter(p=>p!=='alex');
+  return `<div class="banner"><p>${all ? `<b>Everyone is happy with ${st.name}.</b>` : `<b>${st.name}</b> works for ${top.n} of 4. ${waitTxt}`}</p>
+    ${!known(top.id) ? `<small>Its price is incomplete. Confirm the fee before you book.</small>`:''}
+    <div class="row"><button class="btn sm" data-act="askChoose" data-id="${top.id}">${all ? 'Lock it in' : 'Choose it now'}</button>${nudge.length ? `<button class="btn ghost sm" data-act="nudge">Nudge ${esc(list(nudge.map(p=>PEOPLE_INFO[p].name)))}</button>`:''}</div></div>`;
+}
+
+function mapStrip(){
+  const W=340,H=132, minLng=-9.1555, maxLng=-9.1355, minLat=38.7035, maxLat=38.7185;
+  const X = lng => (lng-minLng)/(maxLng-minLng)*W, Y = lat => (maxLat-lat)/(maxLat-minLat)*H;
+  const pins = S.saved.map(id => {const s=STAYS[id]; const x=X(s.lng), y=Y(s.lat);
+    const right = x > W-110, lx = right ? x-11 : x+11;
+    return `<g><circle cx="${x}" cy="${y}" r="7" fill="#f57963" stroke="#0a0a0a" stroke-width="2"/><text x="${lx}" y="${y+4}" text-anchor="${right?'end':'start'}" font-size="11.5" font-weight="600" fill="#f5f9ff" font-family="Inter Tight, sans-serif">${s.name}</text></g>`}).join('');
+  const rx=X(-9.1394), ry=Y(38.7139);
+  return `<div class="map"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Approximate locations of saved stays">
+    <rect width="${W}" height="${H}" fill="#121416"/>
+    <g stroke="rgba(255,255,255,.05)" stroke-width="1">${[1,2,3,4,5,6].map(i=>`<line x1="${i*W/7}" y1="0" x2="${i*W/7}" y2="${H}"/>`).join('')}${[1,2,3].map(i=>`<line x1="0" y1="${i*H/4}" x2="${W}" y2="${i*H/4}"/>`).join('')}</g>
+    <path d="M0 ${H-18} C 80 ${H-26}, 170 ${H-20}, 230 ${H-24} S 320 ${H-30}, ${W} ${H-34} L ${W} ${H} L 0 ${H} Z" fill="#0a292c"/>
+    <text x="14" y="${H-6}" font-size="10" fill="#9ee3d2" opacity=".7" font-family="Inter Tight, sans-serif" letter-spacing=".1em">TAGUS RIVER</text>
+    <g><rect x="${rx-4}" y="${ry-4}" width="8" height="8" transform="rotate(45 ${rx} ${ry})" fill="#f9ac69"/><text x="${rx-8}" y="${ry+15}" text-anchor="end" font-size="10.5" fill="#f9ac69" font-family="Inter Tight, sans-serif">Centre (Rossio)</text></g>
+    ${pins}</svg><div class="cap"><span>Approximate locations</span><span>~1 km across</span></div></div>`;
+}
+
+function budgetBlock(id){
+  const t = total(id), s = STAYS[id];
+  if (t == null){
+    const pct = s.base/BUDGET*100;
+    return `<div class="budget"><div class="bar"><div class="fill" style="width:${pct}%"></div><div class="unk" style="left:${pct}%"></div></div>
+      <div class="txt"><span class="warn">Fits budget only if the fee is ${eur(BUDGET - s.base)} or less</span><span class="tnum">${eur(BUDGET)}</span></div></div>`;
+  }
+  const over = t > BUDGET, pct = Math.min(t/BUDGET,1)*100, diff = Math.abs(BUDGET - t);
+  return `<div class="budget"><div class="bar ${over?'over':''}"><div class="fill" style="width:${pct}%"></div></div>
+    <div class="txt"><span class="${over?'bad':'ok'} tnum">${eur(diff)} ${over?'over':'under'} budget</span><span class="tnum">${eur(BUDGET)}</span></div></div>`;
+}
+function priceBlock(id){
+  const t = total(id), s = STAYS[id];
+  if (t == null) return `<div class="price"><b class="tnum">${eur(s.base)} + fee</b><button class="inc" data-act="openPrice">${ic('alert',12,2)} Price incomplete</button></div>`;
+  const note = s.feeMissing ? `<small>incl. ${eur(S.fee)} fee you added · <button class="choose" style="font-size:12px" data-act="openPrice">edit</button></small>` : `<small class="tnum">${eur2(t/PEOPLE)} each · all fees</small>`;
+  return `<div class="price"><b class="tnum">${eur(t)} total</b>${note}</div>`;
+}
+function forYou(id){
+  const q = fitFor(id,'quiet'), w = fitFor(id,'walk');
+  const glyph = s => s==='match' ? ic('check',12,2.4) : s==='conflict' ? ic('alert',12,2.2) : s==='unknown' ? ic('q',12,2) : ic('tilde',12,2.2);
+  const sig = f => f ? `<span class="sig ${f.s}">${glyph(f.s)}${esc(f.t)}</span>` : '';
+  const inner = (q||w) ? sig(q)+sig(w) : `<span class="sig unknown">Preferences off for this trip</span>`;
+  return `<button class="foryou" data-act="openMemory" data-id="${id}" aria-label="How this stay fits your saved preferences">
+    <span class="who">${ic('lock',11,2)}traveler.md</span><span class="sigs">${inner}</span><span class="chev">${ic('chev',14)}</span></button>`;
+}
+function card(id, as){
+  const s = STAYS[id], chosen = S.decided === id, ins = inFor(id), mine = S.votes[as].includes(id);
+  const noteHtml = ORDER.filter(p => S.notes[p] && S.notes[p].id === id).map(p => `<div class="quote">${avImg(p,'')}<span><b>${PEOPLE_INFO[p].name}:</b> ${esc(S.notes[p].text)}</span></div>`).join('');
+  const savedBy = s.from || `${s.src} · ${s.provider}`;
+  return `<article class="card ${S.flash===id?'flash':''}" data-card="${id}">
+    <div class="photo"><img src="${IMG[s.img]}" alt="${s.name}"><span class="prov"><img src="${IMG[s.logo]}" alt="${s.provider}"></span>${chosen?`<span class="chosen-tag">Chosen</span>`:''}${as==='alex' && !S.decided ? `<button class="rm-btn" data-act="removeStay" data-id="${id}" aria-label="Remove ${s.name} from the shortlist">${ic('x',14,2.2)}</button>`:''}</div>
+    <div class="body">
+      <div class="titlerow"><div><h4>${s.name}</h4><div class="saved-by">${savedBy}</div></div>${priceBlock(id)}</div>
+      ${budgetBlock(id)}
+      <div class="facts">${s.facts.map(([i,t]) => `<span class="fact">${ic(i,12)}${t}</span>`).join('')}</div>
+      <a class="ext" href="${provUrl(id)}" target="_blank" rel="noopener">View on ${s.provider} ${ic('chev',11,2)}<span>May 14–17 · 4 guests</span></a>
+      ${as==='alex' ? forYou(id) : ''}
+      ${noteHtml ? `<div class="notes-in">${noteHtml}</div>`:''}
+      ${S.shared ? `<div class="votes">
+        <div class="who-in">${ins.length ? `<span class="avs">${ins.map(p=>avImg(p)).join('')}</span><span><b>${ins.length} of 4</b> in</span>` : `<span>No one yet</span>`}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${as==='alex' && !S.decided ? `<button class="choose" data-act="askChoose" data-id="${id}">Choose</button>`:''}
+          <button class="in-btn" aria-pressed="${mine}" data-act="vote" data-id="${id}" data-who="${as}">${mine ? ic('check',14,2.4)+'I’m in' : 'I’d be happy here'}</button>
+        </div></div>` : ''}
+    </div></article>`;
+}
+
+function navbar(cta){
+  return `<div class="navbar">${cta||''}<nav class="nav" aria-label="App">
+    <span>${ic('home2',18)}Home</span><span class="on">${ic('plane',18)}Trips</span>
+    <button data-act="openTripp" aria-label="Ask Tripp"><span class="orb"></span>Tripp</button>
+    <span>${ic('plug',18)}Connections</span><span>${ic('gear',18)}Settings</span></nav></div>`;
+}
+function dock(){
+  if (S.view === 'riley'){
+    if (!S.shared || S.rileyDone) return '';
+    const n = S.votes.riley.length;
+    return `<div class="navbar" style="padding-bottom:22px"><button class="btn block" data-act="rileyDone" ${n?'':'disabled'}>${n ? `Send my picks to Alex (${n})` : 'Tap the stays you’d be happy with'}</button></div>`;
+  }
+  if (S.screen === 'decided') return navbar();
+  if (!S.shared && S.saved.length >= 2) return navbar(`<button class="btn block" data-act="openShare">${ic('share',16,2)} Ask the group to vote</button>`);
+  if (S.saved.length < 2) return navbar(`<button class="btn block" data-act="openAdd">${ic('link',16,2)} Paste a listing link</button>`);
+  return navbar();
+}
+
+// ---------- Friend view ----------
+function rileyScreen(){
+  if (S.shared && !S.linkOn) return `${statusbar()}<div class="urlbar">${ic('lock',11)} ${slug()}</div><div class="app" style="padding-top:60px;text-align:center;align-items:center"><h3 style="margin:0;font-size:18px">This link was turned off</h3><p class="summary" style="margin:0;max-width:30ch">Alex turned off this link, so nobody new can open it. Ask Alex for a new one.</p></div>`;
+  if (!S.shared) return `${statusbar()}<div class="urlbar">${ic('lock',11)} traveler.md</div><div class="app" style="padding-top:60px;text-align:center;align-items:center">
+    <h3 style="margin:0;font-size:18px">Alex hasn't shared the list yet</h3><p class="summary" style="margin:0;max-width:30ch">Switch back to Alex and tap “Ask the group to vote”. Riley gets a link in the group chat.</p>
+    <button class="btn" data-act="asAlexShare">Share as Alex</button></div>`;
+  if (S.rileyDone) {
+    const seed = S.rileyReason.length ? S.rileyReason.map(r=>r.toLowerCase()).join(', ') : null;
+    return `${statusbar()}<div class="urlbar">${ic('lock',11)} ${slug()}</div><div class="app" style="padding-top:28px">
+    <div class="rule" style="font-size:15px"><b>Thanks, Riley.</b> Alex can see your picks now.</div>
+    ${S.saved.map(id => { const ins=inFor(id); return `<div class="kv"><span>${STAYS[id].name}</span><span class="v">${ins.length} of 4${S.votes.riley.includes(id)?' · incl. you':''}</span></div>`}).join('')}
+    <button class="linkbtn" data-act="rileyEdit">Change my picks</button>
+    <div class="growth"><h4>Want your next trip to start with you?</h4><p>${seed ? `You said you care about <b>${esc(seed)}</b>. ` : ''}Save it to your own <b>traveler.md</b>, and Claude, ChatGPT and your other AI tools will know it next time.</p>
+      <div class="acts"><button class="pill primary" data-act="rileySignup">Create my traveler.md</button><button class="pill" data-act="rileySkip">No thanks</button></div></div>
+  </div>`;
+  }
+  return `${statusbar()}<div class="urlbar">${ic('lock',11)} ${slug()}</div>
+  <div class="app">
+    <div class="invite">${avImg('alex','')}<p><b>Alex</b> wants the group to pick a stay for <b>Lisbon, May 14–17</b>.</p></div>
+    <div class="rule">Tap <b>every</b> stay you'd be happy with, not just your favourite. We go with the one that works for the most people.</div>
+    <p class="summary" style="margin:0">Prices are for all 4 of us, 3 nights, including fees. Budget ${eur(BUDGET)}.</p>
+    ${sortedSaved().map(id => card(id,'riley')).join('')}
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="label">What matters to you? (optional, shared with the group)</div>
+      <div class="reasons">${['Quiet at night','Close to everything','Lowest price'].map(r => `<button data-act="reason" data-r="${r}" aria-pressed="${S.rileyReason.includes(r)}">${r}</button>`).join('')}</div>
+    </div>
+    <p class="summary" style="margin:0">No app or account needed. Only your first name is shown.</p>
+  </div>`;
+}
+
+// ---------- Decided ----------
+function decidedScreen(){
+  const id = S.decided, s = STAYS[id], t = total(id), ins = inFor(id);
+  return `${statusbar()}<div class="app">
+    <div class="topbar"><button class="back" data-act="undoDecide">${ic('back',16)} Lisbon · May 2027</button><span class="tb-r">${avImg('alex','me')}</span></div>
+    ${ticket()}
+    <div class="hero-dec"><img src="${IMG[s.img]}" alt="${s.name}"><div class="b">
+      <h3>${s.name}</h3>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)"><span class="avs">${ins.map(p=>avImg(p)).join('')}</span>${ins.length} of 4 happy with it</div>
+      <div class="kv tnum"><span class="k">Total, 3 nights, all fees</span><span class="v">${t==null ? eur(s.base)+' + fee' : eur(t)}</span><span class="k">Each of 4</span><span class="v">${t==null ? 'Unknown' : eur2(t/PEOPLE)}</span></div>
+      <a class="btn block" href="https://www.${s.provider==='Booking.com'?'booking.com':s.provider.toLowerCase()+'.com'}/" target="_blank" rel="noopener">Book on ${s.provider}</a>
+      <p class="summary" style="margin:0;text-align:center">Opens the listing with your dates and 4 guests. Booking happens on ${s.provider}.</p>
+    </div></div>
+    <div class="nextlist">
+      <div class="nx"><span class="dot ok">${ic('check',12,2.4)}</span><span>Jordan, Sam and Riley got the result in the group chat.</span></div>
+      <div class="nx"><span class="dot ok">${ic('check',12,2.4)}</span><span><b>trip.md updated.</b> Your connected tools now know where you're staying.<span class="tools" style="margin-top:6px">${['Claude','ChatGPT','Codex'].map(x=>`<span>${x}</span>`).join('')}</span></span></div>
+      <div class="nx"><span class="dot unk">${ic('heart',12,2)}</span><span>The other ${S.saved.length-1} stays remain in the shortlist as backups.</span></div>
+    </div>
+    <div class="tripp"><span class="orb"></span><div class="bubble"><span><b>Try it:</b> ask Claude “find dinner within 10 minutes of where we’re staying in Lisbon”. It reads trip.md, so it already knows.</span></div></div>
+    <button class="linkbtn" data-act="undoDecide">Undo and reopen voting</button>
+  </div>`;
+}
+
+// ---------- Sheets ----------
+function sheetHtml(){
+  const t = S.sheet.type;
+  return ({add:addSheet, import:importSheet, price:priceSheet, memory:()=>memorySheet(S.sheet.id), share:shareSheet, choose:()=>chooseSheet(S.sheet.id), tripp:trippSheet, confirmWrite:confirmWriteSheet})[t](S.sheet);
+}
+function addSheet(sh){
+  const unsaved = Object.keys(STAYS).filter(id => !S.saved.includes(id) && !S.removed.includes(id));
+  return `<div class="grab"></div>
+    <h3>Add a stay to Lisbon</h3>
+    <p class="sub">Paste a listing link. We pull the price for your dates and check it fits 4 adults and 2 bedrooms.</p>
+    <form class="field" data-form="link"><input id="linkInput" type="url" inputmode="url" autocomplete="off" placeholder="https://…" value="${esc(sh.value||'')}" aria-label="Listing link"><button class="btn" type="submit">Add</button></form>
+    ${sh.error ? `<div class="err">${esc(sh.error)}</div>`:''}
+    <div class="label">${unsaved.length ? 'Recently copied (sample links)' : 'All sample stays are saved'}</div>
+    <div class="samples">${unsaved.map(id => `<button class="sample" data-act="importSample" data-id="${id}"><span class="lg"><img src="${IMG[STAYS[id].logo]}" alt="${STAYS[id].provider}"></span><span class="u">${STAYS[id].url}</span>${ic('plus',16,2)}</button>`).join('')}</div>
+    <div class="label">Also works from</div>
+    <div class="srcs"><span>Share button in any booking app</span><span>Instagram Reels</span><span>TikTok</span><span>Screenshots</span><span>Links in the group chat</span></div>`;
+}
+function importSheet(sh){
+  const s = STAYS[sh.id], step = sh.step;
+  const rows = [
+    ['Opening the '+s.provider+' listing', s.name],
+    ['Matching trip.md dates', 'May 14–17 · 3 nights'],
+    ['Checking space', 'Sleeps 4 · 2 bedrooms'],
+    s.feeMissing ? ['Reading the total price', eur(s.base)+' + fee not shown', 'warn'] : ['Reading the total price', eur(s.base)+' incl. fees']
+  ];
+  const rowHtml = rows.map((r,i) => {
+    const st = i < step ? (r[2]||'ok') : i === step ? 'spin' : 'empty';
+    return `<div class="check ${st==='empty'?'pending':''}"><span class="dot ${st}">${st==='ok'?ic('check',12,2.4):st==='warn'?ic('alert',12,2.2):''}</span><span>${r[0]}</span><span class="v tnum">${i<step?r[1]:''}</span></div>`;
+  }).join('');
+  const done = step >= rows.length;
+  return `<div class="grab"></div>
+    <div class="preview"><img src="${IMG[s.img]}" alt=""><div><b>${s.name}</b><span class="sub">${s.provider} · ${s.facts.slice(1).map(f=>f[1]).join(' · ')}</span></div></div>
+    <div class="checks">${rowHtml}</div>
+    ${done && s.feeMissing ? `<div class="privacy warn">${ic('alert',16,2)}<span><b>Expedia charges a mandatory property fee but doesn't show the amount.</b> We'll save it as ${eur(s.base)} + fee and won't call it the cheapest until the fee is known.</span></div>`:''}
+    ${done ? `<button class="btn block" data-act="confirmImport" data-id="${s.id}">Add to Lisbon shortlist</button>` : `<button class="btn block" disabled>Reading listing…</button>`}`;
+}
+function priceSheet(){
+  const s = STAYS.riverside, room = BUDGET - s.base;
+  return `<div class="grab"></div>
+    <h3>Riverside Flat's price is incomplete</h3>
+    <p>Expedia says a mandatory property fee is due at the property, but doesn't show the amount.</p>
+    <div class="kv tnum">
+      <span class="k">Room price, 3 nights</span><span class="v">${eur(s.base)}</span>
+      <span class="k">Property fee</span><span class="v" style="color:var(--sunset)">${S.fee==null ? 'Not shown' : eur(S.fee)}</span>
+      <span class="k total">Total</span><span class="v total">${S.fee==null ? eur(s.base)+' + fee' : eur(s.base+S.fee)}</span>
+    </div>
+    <p class="sub">Stays within the ${eur(BUDGET)} budget if the fee is <b style="color:var(--text)">${eur(room)} or less</b> (${eur2(room/PEOPLE)} each).</p>
+    <div class="label">Found the fee? Add it for everyone</div>
+    <form class="field" data-form="fee"><input id="feeInput" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 120" value="${S.fee ?? ''}" aria-label="Property fee in euros"><button class="btn" type="submit">Save fee</button></form>
+    <div class="acts">
+      <a class="pill" href="https://www.expedia.com/" target="_blank" rel="noopener">Check on Expedia</a>
+      <button class="pill" data-act="askHost">Ask Tripp to draft a message to the property</button>
+      ${S.fee!=null?`<button class="pill danger" data-act="clearFee">Remove fee</button>`:''}
+    </div>
+    <p class="sub">Until then it's listed last, labelled incomplete for the whole group, and never shown as the cheapest.</p>`;
+}
+function memorySheet(id){
+  const s = STAYS[id];
+  const block = key => {
+    const p = S.prefs[key];
+    if (p.deleted) return `<div class="pref off"><span class="sub">Removed from your traveler.md. Your connected tools no longer see it.</span><div class="acts"><button class="pill" data-act="restorePref" data-k="${key}">Undo</button></div></div>`;
+    const f = S.wrongFor[id+':'+key] ? {s:'match', ev:'You marked this flag as wrong for this stay.'} : FIT[id][key];
+    const dot = f.s==='match'?'ok':f.s==='conflict'?'bad':f.s==='unknown'?'unk':'warn';
+    const glyph = f.s==='match'?'check':f.s==='conflict'?'alert':f.s==='unknown'?'q':'tilde';
+    const editing = S.sheet.edit === key;
+    return `<div class="pref ${p.paused?'off':''}">
+      ${editing ? `<textarea id="prefEdit-${key}" aria-label="Edit preference">${esc(p.text)}</textarea><div class="acts"><button class="pill primary" data-act="reviewEdit" data-k="${key}">Review change</button><button class="pill" data-act="cancelEdit">Cancel</button></div>` : `<q>${esc(p.text)}</q>`}
+      <span class="src">traveler.md › ${PREF_KEY[key]}${p.paused ? ' · off for Lisbon' : ''}</span>
+      ${p.paused ? '' : `<div class="ev"><span class="dot ${dot}">${ic(glyph,12,2.2)}</span><span><b>${s.name}:</b> ${esc(f.ev)}</span></div>`}
+      ${editing ? '' : `<div class="acts">
+        ${p.paused ? `<button class="pill" data-act="unpause" data-k="${key}">Turn back on for Lisbon</button>`
+          : `<button class="pill" data-act="pause" data-k="${key}">Doesn't matter this trip</button>
+             ${S.wrongFor[id+':'+key] ? `<button class="pill" data-act="unwrong" data-k="${key}" data-id="${id}">Undo “wrong”</button>` : (f.s!=='match' ? `<button class="pill" data-act="wrong" data-k="${key}" data-id="${id}">Wrong for this stay</button>`:'')}`}
+        <button class="pill" data-act="editPref" data-k="${key}">Edit</button>
+        <button class="pill danger" data-act="askDelete" data-k="${key}">Forget</button>
+      </div>`}
+    </div>`;
+  };
+  return `<div class="grab"></div>
+    <div class="label">${ic('lock',11,2)} Only you see this</div>
+    <h3>How ${s.name} fits what you usually like</h3>
+    <p class="sub">From your traveler.md. These are general preferences, not rules for this trip. They add context but never hide or re-rank a stay.</p>
+    ${block('quiet')}${block('walk')}
+    <div class="privacy">${ic('file',15)}<span>Trip-only choices (“doesn't matter this trip”, “wrong for this stay”) go in <b>trip.md</b>, because they won’t be true on your next trip. Editing or forgetting changes <b>traveler.md</b>, which every connected tool reads, so we show you the change first.</span></div>
+    <div class="privacy">${ic('user',15)}<span>Jordan, Sam and Riley see the listing facts, like “reviews mention street noise”, but never your preferences.</span></div>`;
+}
+function confirmWriteSheet(sh){
+  const p = S.prefs[sh.k], del = sh.op === 'delete';
+  return `<div class="grab"></div>
+    <h3>${del ? 'Forget this preference?' : 'Update your traveler.md?'}</h3>
+    <p class="sub">This changes your memory for every trip. Claude, ChatGPT and your other connected tools will see it next time they read traveler.md.</p>
+    <div class="diff"><div class="fn">traveler.md › ${PREF_KEY[sh.k]}</div><div class="rm">- ${esc(p.text)}</div>${del ? '' : `<div class="ad">+ ${esc(sh.text)}</div>`}</div>
+    <div class="acts"><button class="pill" data-act="backToMemory">Cancel</button><button class="pill ${del?'danger':'primary'}" data-act="commitWrite">${del ? 'Forget it' : 'Save to traveler.md'}</button></div>
+    <p class="sub">${del ? 'Only want it off for Lisbon? Use “Doesn’t matter this trip” instead.' : 'You can see every change in the trip’s History.'}</p>`;
+}
+function shareSheet(){
+  return `<div class="grab"></div>
+    <h3>Ask the group to vote</h3>
+    <p class="sub">Friends open a link. No app or account needed. They tap every stay they'd be happy with.</p>
+    <div class="chat"><div class="hd">Lisbon May ✈️ · group chat preview</div>
+      <div class="msg">Which of these would you be happy with? Tap all that work, by Friday 8pm
+        <div class="lk"><b>Lisbon stays · May 14–17</b><small>${S.saved.length} options · ${S.saved.map(id=>STAYS[id].provider).join(', ')}</small><small>traveler.md/t/lisbon-may</small></div>
+      </div></div>
+    <div class="kv"><span class="k">${ic('cal',13)} Voting closes</span><span class="v">Fri, Oct 9 · 8 pm</span><span class="k">${ic('link',13)} Link access</span><span class="v">Ends when voting closes</span><span class="k">${ic('lock',13)} Your traveler.md</span><span class="v">Not shared</span></div>
+    <div style="display:flex;gap:8px"><button class="btn ghost" style="flex:1" data-act="copyLink">Copy link</button><button class="btn" style="flex:1.4" data-act="doShare">Send to group chat</button></div>`;
+}
+function chooseSheet(id){
+  const s = STAYS[id], ins = inFor(id), missing = ORDER.filter(p => !ins.includes(p));
+  // A friend who skipped this stay and shared a preference it doesn't meet: likely a dealbreaker, not indifference.
+  const flagged = missing.map(p => { const x = S.shares.find(x => x.who===p && FIT[id][x.key] && FIT[id][x.key].s!=='match'); return x ? {p, x, f:FIT[id][x.key]} : null; }).filter(Boolean);
+  const rest = missing.filter(p => !flagged.some(f => f.p===p));
+  return `<div class="grab"></div>
+    <h3>Choose ${s.name}?</h3>
+    <div class="kv tnum"><span class="k">Happy with it</span><span class="v">${ins.length} of 4</span><span class="k">Total</span><span class="v">${known(id)?eur(total(id)):eur(s.base)+' + fee'}</span></div>
+    ${flagged.map(({p,x,f}) => `<div class="privacy warn">${avImg(p,'')}<span><b>${PEOPLE_INFO[p].name} didn’t pick ${s.name}</b> and shared “${esc(x.text)}”. ${esc(f.ev)}</span></div>`).join('')}
+    ${rest.length ? `<p class="sub">${list(rest.map(p=>p==='alex'?'You':PEOPLE_INFO[p].name))} ${rest.length>1?'haven’t':'hasn’t'} said they're happy with this one yet.</p>`:''}
+    ${!known(id) ? `<div class="privacy warn">${ic('alert',15,2)}<span>The property fee is still unknown. Check it on Expedia before you book.</span></div>`:''}
+    <p class="sub">We'll post the result in the group chat, write it to trip.md, and keep the other stays as backups.</p>
+    <div style="display:flex;gap:8px"><button class="btn ghost" style="flex:1" data-act="closeSheet">Not yet</button><button class="btn" style="flex:1.4" data-act="decide" data-id="${id}">Choose and tell the group</button></div>`;
+}
+function trippSheet(){
+  let body;
+  if (S.saved.length < 2) body = `<span>Save at least two stays and I'll compare them for the group.</span>`;
+  else {
+    const items = sortedSaved().map(id => {
+      const s = STAYS[id], t = total(id), ins = inFor(id), q = fitFor(id,'quiet');
+      const price = t==null ? `${eur(s.base)} + an unknown fee` : `${eur(t)} (${eur2(t/PEOPLE)} each)`;
+      const trade = id==='garden' ? 'Residential street, but a 15-minute walk to the centre.'
+        : id==='central' ? 'Right in the centre, but reviews mention street noise.'
+        : 'Near restaurants, quietness unknown, and the fee could change the ranking.';
+      const mine = q && q.s==='conflict' ? ' <i>For you: may be noisy at night.</i>' : '';
+      return `<li><b>${s.name}</b>: ${price}. ${trade}${S.shared?` ${ins.length} of 4 happy.`:''}${mine}</li>`;
+    }).join('');
+    const g = S.shared && responded().length ? groupStatus() : null;
+    const lead = g && !g.tie ? `<span><b>Where the group stands:</b> ${STAYS[g.top.id].name} is the stay most people are happy with (${g.top.n} of 4).</span>`
+      : g && g.tie ? `<span><b>Where the group stands:</b> it's a tie. The real tradeoff is quiet versus central, so ask who cares most about noise.</span>`
+      : `<span><b>Here's the shortlist in one look.</b> Ready to send to the group when you are.</span>`;
+    body = `${lead}<ul>${items}</ul>`;
+  }
+  return `<div class="grab"></div>
+    <div class="tripp"><span class="orb"></span><div style="display:flex;flex-direction:column;gap:2px"><b>Tripp</b><span class="sub">Your Traveler.md assistant</span></div></div>
+    <div class="bubble">${body}<div class="cites"><span>trip.md › shortlist</span><span>listing facts</span>${S.prefs.quiet.paused||S.prefs.quiet.deleted?'':'<span>traveler.md › stay.vibe</span>'}</div></div>
+    <div class="acts">${S.saved.length>=2?`<button class="pill" data-act="trippPost">Post this to the group, without my preferences</button>`:''}${S.saved.includes('riverside') && S.fee==null ? `<button class="pill" data-act="askHost">Ask the property about the fee</button>`:''}</div>
+    <p class="sub">Tripp only uses trip.md, the listings and your traveler.md, and never shares your preferences with the group.</p>`;
+}
+
+// ---------- Notes rail ----------
+const STEPS = [
+  {k:'start', t:'Start from trip.md', d:'Mark which of Alex\u2019s saved preferences matter for Lisbon. Friends can add theirs.'},
+  {k:'save', t:'Save across providers', d:'Paste Booking.com and Expedia links. Garden Apartment (Airbnb) is already in.'},
+  {k:'review', t:'Review and compare', d:'Total vs. budget, the incomplete Expedia fee, Compare, and the .md file.'},
+  {k:'decide', t:'Decide together', d:'Share a link. Everyone taps the stays they’d be happy with.'},
+  {k:'memory', t:'Use traveler memory', d:'The private traveler.md line, and how Alex corrects it.'}
+];
+function currentStep(){
+  const sh = S.sheet && S.sheet.type;
+  if (sh === 'memory' || sh === 'confirmWrite') return 'memory';
+  if (sh === 'add' || sh === 'import') return 'save';
+  if (!sh && S.mode==='sections' && S.saved.length < 2 && !S.shared && S.screen==='trip' && S.view==='alex') return 'start';
+  if (sh === 'share' || sh === 'choose' || S.view==='riley' || S.shared || S.screen==='decided') return 'decide';
+  if (S.saved.length >= 3 || sh === 'price') return 'review';
+  return 'save';
+}
+function stepDone(k){
+  if (k==='start') return S.startSeen;
+  if (k==='save') return new Set(S.saved.map(id=>STAYS[id].provider)).size >= 2;
+  if (k==='review') return S.saved.length >= 2 && (S.compareSeen || S.mdOpened || S.fee!=null);
+  if (k==='decide') return !!S.decided;
+  if (k==='memory') return Object.values(S.prefs).some(p=>p.paused||p.deleted) || Object.keys(S.wrongFor).length>0 || S.memorySeen;
+}
+function renderSteps(){
+  const cur = currentStep();
+  $('steps').innerHTML = STEPS.map((s,i) => `<li><button class="step ${stepDone(s.k)?'done':''} ${cur===s.k?'cur':''}" data-act="jump" data-k="${s.k}"><span class="n">${stepDone(s.k)?ic('check',12,2.6):i+1}</span><span><b>${s.t}</b><small>${s.d}</small></span></button></li>`).join('');
+}
+function renderView(){
+  $('viewseg').innerHTML = ['alex','riley'].map(p => `<button type="button" data-act="view" data-v="${p}" aria-pressed="${S.view===p}">${avImg(p,'')}${p==='alex'?'Alex, organizer':'Riley, friend'}</button>`).join('');
+  $('viewhint').textContent = S.view==='alex' ? 'Switch to Riley to see the link friends open from the group chat.' : 'The web page Riley opens from the group chat. It has no traveler.md line, because Alex’s memory is private.';
+}
+const WHY = {
+  start:{h:'Start from trip.md', li:[
+    'Dates, guests and budget come from the trip.',
+    'Alex’s saved preferences are suggestions. Mark each one <b>Matters</b> or <b>Not this trip</b>.']},
+  save:{h:'One list, any site', li:[
+    'Paste a link from any provider. We store the total for the stay, fees included.']},
+  review:{h:'Total first, gaps shown', li:[
+    'Each total is shown against the €1,200 budget.',
+    'Riverside shows “€990 + fee”. It fits only if the fee is €210 or less, so it sorts last.',
+    '<code>.md</code> shows the same list as the file AI tools read.']},
+  compare:{h:'Compare, built from this trip', li:[
+    'Borrowed from Expedia. The rows are what matters to someone on this trip, not generic amenities.']},
+  price:{h:'The missing fee', li:[
+    'Never shown as cheapest. Whoever finds the fee adds it once, for everyone.']},
+  memory:{h:'Memory adds notes but never ranks', li:[
+    'Only Alex sees it. Each flag is match, conflict or unknown, with evidence.',
+    'Trip-only fixes save to trip.md with Undo. Edits to traveler.md show a diff first.']},
+  decide:{h:'“Happy with”, not “favourite”', li:[
+    'Tapping every stay that works shows where the group overlaps.',
+    'Alex sees who has opened and voted, and can turn the link off.']},
+  riley:{h:'The friend’s view', li:[
+    'A web link with no account. Alex’s preferences stay private.']},
+  decided:{h:'Closing the loop', li:[
+    'The choice is written to trip.md, so Claude and ChatGPT know where the group is staying.']}
+};
+function renderWhy(){
+  let k = currentStep();
+  if (S.sheet && S.sheet.type==='price') k='price';
+  if (S.view==='riley') k='riley';
+  if (S.screen==='decided' && S.view==='alex') k='decided';
+  if (S.mode==='md' && S.view==='alex' && !S.sheet && S.screen==='trip') k='review';
+  if (S.mode==='compare' && S.view==='alex' && !S.sheet && S.screen==='trip') k='compare';
+  const w = WHY[k];
+  $('why').innerHTML = `<div class="label">Design notes</div><h3>${w.h}</h3><ul>${w.li.map(l=>`<li>${l}</li>`).join('')}</ul>`;
+}
+
+// ---------- Actions ----------
+function toast(html, avatar, act, actLabel){
+  const el = $('toast');
+  el.innerHTML = `<div class="toast" role="status">${avatar?avImg(avatar,''):''}<span>${html}</span>${act?`<button data-act="${act}">${actLabel||'Undo'}</button>`:''}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(()=>{ el.innerHTML=''; }, 3800);
+}
+const wrote = (file, extra) => toast(`${extra ? extra + ' ' : ''}Saved to <span class="file">${file}</span>`, null, file==='trip.md' ? 'showMd' : null, 'View');
+function flash(id){ S.flash = id; render(); setTimeout(()=>{ S.flash=null; const el=document.querySelector(`[data-card="${id}"]`); if(el) el.classList.remove('flash'); }, 1400); }
+function startImport(id){
+  S.sheet = {type:'import', id, step:0}; render();
+  const tick = () => { if (!S.sheet || S.sheet.type!=='import') return; S.sheet.step++; render(); if (S.sheet.step < 4) later(tick, 520); };
+  later(tick, 600);
+}
+function matchLink(v){ v = v.toLowerCase(); if (/booking\.com/.test(v)) return 'central'; if (/expedia\./.test(v)) return 'riverside'; if (/airbnb\./.test(v)) return 'garden'; return null; }
+function doShare(){
+  S.shared = true; S.sheet = null; log('Alex shared the shortlist with Jordan, Sam and Riley'); render();
+  toast('Sent to “Lisbon May”. Voting closes Fri, 8 pm.');
+  later(() => { if(!S.shared) return; S.seen.jordan = true; S.seen.sam = true; render(); }, 900);
+  later(() => { if(!S.shared) return; S.votes.jordan = ['garden']; S.notes.jordan = {id:'garden', text:'Quiet street, we’ll actually sleep'};
+    S.shares.push({who:'jordan', key:'quiet', text:'Quiet at night', src:'shared from Jordan’s traveler.md'});
+    log('Jordan is happy with Garden Apartment and shared “quiet at night”'); render(); toast('<b>Jordan</b> is happy with Garden Apartment', 'jordan'); }, 1800);
+  later(() => { if(!S.shared) return; S.votes.sam = ['central','garden']; S.notes.sam = {id:'central', text:'Central is my favourite, but Garden works too'};
+    S.shares.push({who:'sam', key:'walk', text:'Close to everything', src:'added while voting'});
+    log('Sam is happy with Central Residence and Garden Apartment'); render(); toast('<b>Sam</b> is happy with Central Residence and Garden Apartment', 'sam'); }, 4200);
+}
+function restore(id){ S.removed=S.removed.filter(x=>x!==id); if(!S.saved.includes(id)) S.saved.push(id); log(`Alex restored ${STAYS[id].name}`); $('toast').innerHTML=''; flash(id); }
+function ensureSaved(){ S.removed=[]; ['garden','central','riverside'].forEach(id => { if(!S.saved.includes(id)){ S.saved.push(id); log(`${STAYS[id].name} added from ${STAYS[id].provider}`); } }); }
+
+const actions = {
+  closeSheet(){ S.sheet=null; render(); },
+  mode(el){ S.mode = el.dataset.m; if (S.mode==='md') S.mdOpened = true; if (S.mode==='compare') S.compareSeen = true; $('screen').scrollTop=0; render(); },
+  mattersToggle(el){ S.mattersOpen = el.dataset.v==='open'; if (!S.mattersOpen) S.startSeen = true; render(); },
+  relevance(el){ const k=el.dataset.k, off = el.dataset.v==='off'; if (S.prefs[k].paused === off) return; S.prefs[k].paused = off; S.startSeen = true;
+    log(off ? `Alex: ${PREF_KEY[k]} not a priority for Lisbon` : `Alex: ${PREF_KEY[k]} matters for Lisbon`); render();
+    toast(off ? 'Marked “not this trip” in <span class="file">trip.md</span>. traveler.md is unchanged.' : 'Marked as mattering for Lisbon in <span class="file">trip.md</span>.'); },
+  removeStay(el){ const id=el.dataset.id; S.saved=S.saved.filter(x=>x!==id); if(!S.removed.includes(id)) S.removed.push(id); log(`Alex removed ${STAYS[id].name} (kept, can be restored)`); render(); toast(`${STAYS[id].name} removed. Its votes are kept if you restore it.`, null, 'restore_'+id); },
+  restoreStay(el){ restore(el.dataset.id); },
+  linkOff(){ S.linkOn=false; log('Alex turned off the share link'); render(); toast('Link off. Nobody new can open it.'); },
+  linkOn(){ S.linkOn=true; log('Alex turned the share link back on'); render(); },
+  linkNew(){ S.linkV++; S.linkOn=true; log('Alex made a new share link. The old one stopped working.'); render(); toast('New link made. The old one no longer works.', null, 'copyLink', 'Copy'); },
+  showMd(){ S.view='alex'; S.screen='trip'; S.sheet=null; S.mode='md'; S.mdOpened=true; $('screen').scrollTop=0; $('toast').innerHTML=''; render(); },
+  openAdd(){ S.view='alex'; S.screen='trip'; S.mode='sections'; S.sheet={type:'add'}; render(); setTimeout(()=>{ const i=$('linkInput'); if(i) i.focus({preventScroll:true}); }, 60); },
+  importSample(el){ startImport(el.dataset.id); },
+  confirmImport(el){ const id=el.dataset.id; if(!S.saved.includes(id)){ S.saved.push(id); log(`${STAYS[id].name} added from ${STAYS[id].provider}${STAYS[id].feeMissing?' (fee amount not shown)':''}`); } S.sheet=null; flash(id); wrote('trip.md', `${STAYS[id].name} added.`); },
+  openPrice(){ S.sheet={type:'price'}; render(); },
+  clearFee(){ S.fee=null; log('Alex removed the Riverside Flat fee'); render(); },
+  askHost(){ toast('Tripp drafted: “Hi! What is the mandatory property fee for 4 adults, May 14–17?” (simulated)'); },
+  openMemory(el){ S.sheet={type:'memory', id:el.dataset.id}; S.memorySeen=true; render(); },
+  pause(el){ const k=el.dataset.k; S.prefs[k].paused=true; log(`Alex: ${PREF_KEY[k]} not a priority for Lisbon`); render(); toast('Off for Lisbon only, saved to <span class="file">trip.md</span>. traveler.md is unchanged.', null, 'undoPause_'+k); },
+  unpause(el){ S.prefs[el.dataset.k].paused=false; log(`Alex turned ${PREF_KEY[el.dataset.k]} back on for Lisbon`); render(); },
+  wrong(el){ S.wrongFor[el.dataset.id+':'+el.dataset.k]=true; log(`Alex corrected a flag on ${STAYS[el.dataset.id].name}`); render(); wrote('trip.md', 'Got it.'); },
+  unwrong(el){ delete S.wrongFor[el.dataset.id+':'+el.dataset.k]; render(); },
+  editPref(el){ S.sheet.edit=el.dataset.k; render(); const t=$('prefEdit-'+el.dataset.k); if(t) t.focus(); },
+  cancelEdit(){ S.sheet.edit=null; render(); },
+  reviewEdit(el){ const k=el.dataset.k, v=$('prefEdit-'+k).value.trim(); if(!v || v===S.prefs[k].text){ S.sheet.edit=null; render(); return; } S.sheet={type:'confirmWrite', op:'edit', k, text:v, back:S.sheet.id}; render(); },
+  askDelete(el){ S.sheet={type:'confirmWrite', op:'delete', k:el.dataset.k, back:S.sheet.id}; render(); },
+  backToMemory(){ S.sheet={type:'memory', id:S.sheet.back}; render(); },
+  commitWrite(){ const sh=S.sheet, p=S.prefs[sh.k];
+    if (sh.op==='delete'){ p.deleted=true; log(`Alex removed ${PREF_KEY[sh.k]} from traveler.md`); }
+    else { p.text=sh.text; log(`Alex updated ${PREF_KEY[sh.k]} in traveler.md`); }
+    S.sheet={type:'memory', id:sh.back}; render(); toast(`${sh.op==='delete'?'Forgotten.':'Updated.'} <span class="file">traveler.md</span> changed for every connected tool.`); },
+  restorePref(el){ S.prefs[el.dataset.k].deleted=false; log(`Alex restored ${PREF_KEY[el.dataset.k]}`); render(); },
+  openShare(){ if (S.saved.length<2){ toast('Save at least two stays first'); return; } if (S.shared){ toast('Already shared. Picks show up as they come in.'); return; } S.sheet={type:'share'}; render(); },
+  copyLink(){ const t='https://'+slug(); try{ navigator.clipboard.writeText(t).then(()=>toast('Link copied'),()=>toast('Link: '+t)); }catch(e){ toast('Link: '+t); } },
+  doShare,
+  vote(el){ const who=el.dataset.who, id=el.dataset.id, v=S.votes[who], i=v.indexOf(id); if(i>=0) v.splice(i,1); else { v.push(id); log(`${PEOPLE_INFO[who].name} is happy with ${STAYS[id].name}`); } render(); },
+  askChoose(el){ S.sheet={type:'choose', id:el.dataset.id}; render(); },
+  decide(el){ S.decided=el.dataset.id; S.sheet=null; S.screen='decided'; log(`Alex chose ${STAYS[S.decided].name}`); $('screen').scrollTop=0; render(); },
+  undoDecide(){ S.decided=null; S.screen='trip'; log('Alex reopened voting'); render(); },
+  nudge(){ toast('Reminder posted in the group chat (simulated)'); },
+  view(el){ S.view=el.dataset.v; if (S.view==='riley' && S.shared && S.linkOn) S.seen.riley = true; S.sheet=null; $('screen').scrollTop=0; render(); },
+  asAlexShare(){ S.view='alex'; ensureSaved(); S.sheet={type:'share'}; render(); },
+  reason(el){ const r=el.dataset.r, a=S.rileyReason, i=a.indexOf(r); if(i>=0) a.splice(i,1); else a.push(r); render(); },
+  rileyDone(){ S.rileyDone=true; const map={'Quiet at night':'quiet','Close to everything':'walk','Lowest price':'price'}; S.shares=S.shares.filter(x=>x.who!=='riley'); S.rileyReason.forEach(r=>S.shares.push({who:'riley', key:map[r], text:r, src:'added while voting'})); if (S.rileyReason.length && S.votes.riley.length){ S.notes.riley={id:S.votes.riley[0], text:S.rileyReason.join(', ')}; } log(`Riley is happy with ${list(S.votes.riley.map(id=>STAYS[id].name))}`); $('screen').scrollTop=0; render(); },
+  rileyEdit(){ S.rileyDone=false; render(); },
+  rileySignup(){ toast('Riley’s traveler.md would start from what Riley just told us (simulated sign-up)'); },
+  rileySkip(){ toast('No problem. Riley’s picks still count.'); },
+  openTripp(){ S.view='alex'; S.sheet={type:'tripp'}; render(); },
+  trippPost(){ S.sheet=null; render(); toast('Summary posted to the group chat. Your preferences were left out.'); },
+  jump(el){
+    const k = el.dataset.k; timers.forEach(clearTimeout); timers=[];
+    S.view='alex'; S.screen='trip'; S.decided=null; S.mode='sections';
+    if (k==='start'){ S.sheet=null; S.startSeen=true; S.mattersOpen=true; }
+    if (k==='save'){ S.sheet={type:'add'}; }
+    if (k==='review'){ ensureSaved(); S.sheet=null; }
+    if (k==='decide'){ ensureSaved(); S.sheet = S.shared ? null : {type:'share'}; }
+    if (k==='memory'){ ensureSaved(); S.sheet={type:'memory', id:'central'}; S.memorySeen=true; }
+    $('screen').scrollTop=0; render();
+  }
+};
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  if (el.classList.contains('scrim') && e.target !== el) return;
+  const a = el.dataset.act;
+  if (a.startsWith('restore_')){ restore(a.slice(8)); return; }
+  if (a.startsWith('undoPause_')){ S.prefs[a.slice(10)].paused=false; render(); return; }
+  if (actions[a]){ e.preventDefault(); actions[a](el); }
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target.dataset.form;
+  if (f === 'link'){
+    const v = $('linkInput').value.trim(), id = matchLink(v);
+    if (!v){ S.sheet = {type:'add', error:'Paste a link to a listing first.'}; render(); return; }
+    if (!id){ S.sheet = {type:'add', value:v, error:'We couldn’t read that link. In this prototype, try a link from airbnb.com, booking.com or expedia.com.'}; render(); return; }
+    if (S.saved.includes(id)){ S.sheet = {type:'add', value:v, error:`${STAYS[id].name} is already on the shortlist.`}; render(); return; }
+    if (S.removed.includes(id)){ S.sheet = null; restore(id); return; }
+    startImport(id);
+  }
+  if (f === 'fee'){
+    const n = parseFloat($('feeInput').value);
+    if (isNaN(n) || n < 0) { toast('Enter the fee in euros, for example 120'); return; }
+    S.fee = Math.round(n); S.sheet = null; log(`Alex added a ${eur(S.fee)} property fee to Riverside Flat`); render(); flash('riverside');
+    wrote('trip.md', `Riverside Flat is ${eur(total('riverside'))}, ${total('riverside')<=BUDGET?'within':'over'} budget.`);
+  }
+});
+document.addEventListener('keydown', e => { if (e.key==='Escape' && S.sheet){ S.sheet=null; render(); } });
+$('reset').addEventListener('click', () => { timers.forEach(clearTimeout); timers=[]; S = fresh(); $('screen').scrollTop=0; $('toast').innerHTML=''; render(); });
+
+render();
+</script>
