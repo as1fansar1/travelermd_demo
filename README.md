@@ -41,6 +41,7 @@ promo/
   stage.css     promo styling
   build.py      writes promo.html from the built prototype
   render.mjs    renders promo.html to MP4 (Playwright + ffmpeg)
+  score.py      original score and sound design, synthesized (numpy + scipy)
   poster.png    end-card still
 PRD.md          product requirements
 ```
@@ -48,7 +49,13 @@ PRD.md          product requirements
 To render the promo video (needs Playwright and ffmpeg):
 
 ```bash
-python3 promo/build.py && node promo/render.mjs
+python3 promo/build.py && node promo/render.mjs && python3 promo/score.py
+```
+
+Then mux the score into the video:
+
+```bash
+ffmpeg -i promo/traveler-wishlist-promo.mp4 -i promo/score.wav -map 0:v -map 1:a -c:v copy -af loudnorm=I=-14:TP=-1.5 -c:a aac -b:a 256k -shortest promo/promo-with-music.mp4
 ```
 
 To rebuild after editing `src.html`:
