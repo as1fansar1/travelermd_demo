@@ -1,0 +1,75 @@
+/* Promo stage: a fixed 1920x1080 canvas. The real prototype app runs inside the phones; everything moves from seek(t), so CSS motion is off. */
+html,body{width:1920px;height:1080px;overflow:hidden;margin:0;padding:0!important;background:#0a0a0a!important}
+.stage{display:none!important}
+*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;caret-color:transparent}
+
+#P{position:fixed;inset:0;overflow:hidden;font-family:var(--sans);color:var(--text);background:#0a0a0a}
+#bg{position:absolute;inset:0}
+#bg i{position:absolute;border-radius:50%;filter:blur(40px)}
+#bg .b1{width:1100px;height:800px;background:radial-gradient(closest-side,rgba(245,121,99,.30),transparent)}
+#bg .b2{width:1200px;height:900px;background:radial-gradient(closest-side,rgba(20,90,96,.55),transparent)}
+#bg .b3{width:700px;height:700px;background:radial-gradient(closest-side,rgba(249,172,105,.16),transparent)}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55));pointer-events:none}
+
+/* Phones */
+.phone{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.device.phone{box-shadow:0 70px 140px -40px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.07),0 0 120px -20px rgba(245,121,99,.18)}
+.phoneB .screen{position:absolute;inset:0;overflow:hidden}
+
+/* Touch indicator */
+.touch{position:absolute;left:0;top:0;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.75);box-shadow:0 6px 18px rgba(0,0,0,.4);opacity:0;z-index:50}
+.ripple{position:absolute;left:0;top:0;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0;z-index:50}
+
+/* Captions */
+#cap{position:absolute;left:150px;top:540px;width:660px;display:flex;flex-direction:column;gap:22px}
+#cap .ln{will-change:auto}
+.kicker{font-family:var(--mono);font-size:19px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);font-weight:500}
+.hl{font-size:80px;font-weight:600;letter-spacing:-.04em;line-height:1.0;text-wrap:balance}
+.sb{font-size:28px;color:var(--text-2);line-height:1.38;max-width:23ch;letter-spacing:-.01em}
+.logos{display:flex;gap:14px}
+.logos span{width:64px;height:64px;border-radius:18px;background:#fff;display:grid;place-items:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.logos img{width:40px;height:40px;object-fit:contain}
+.code{background:#111214;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px 24px;width:560px;box-shadow:0 30px 60px -30px rgba(0,0,0,.9)}
+.code .fh{display:flex;justify-content:space-between;font-family:var(--mono);font-size:15px;color:var(--muted);margin-bottom:12px}
+.code .fh b{color:var(--text);font-weight:500}
+.code pre{margin:0;font-family:var(--mono);font-size:19px;line-height:1.55;color:var(--text-2);white-space:pre;min-height:150px}
+.code pre .h2{color:var(--coral)}
+.code pre .hi{color:var(--mint)}
+.tools{display:flex;gap:10px;margin-top:14px;align-items:center;font-size:17px;color:var(--muted)}
+.tools span{border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 14px;color:var(--text);font-weight:500}
+
+/* Cold open */
+#chaos{position:absolute;inset:0}
+.ci{position:absolute;left:0;top:0}
+.tab{display:flex;align-items:center;gap:12px;background:#1b1c1f;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 18px;font-family:var(--mono);font-size:19px;color:var(--text-2);white-space:nowrap;box-shadow:0 20px 40px -16px rgba(0,0,0,.8)}
+.tab .fav{width:30px;height:30px;border-radius:8px;background:#fff;display:grid;place-items:center;flex:none}
+.tab .fav img{width:20px;height:20px;object-fit:contain}
+.tab .x{color:var(--faint);margin-left:6px}
+.shot{width:270px;border-radius:18px;overflow:hidden;background:#1b1c1f;border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 50px -18px rgba(0,0,0,.85)}
+.shot img{width:100%;height:170px;object-fit:cover;display:block}
+.shot div{padding:10px 14px;font-size:19px;font-weight:600;display:flex;justify-content:space-between}
+.shot div span{color:var(--muted);font-weight:500}
+.shot div .q{color:var(--sunset)}
+.bub{display:flex;align-items:flex-end;gap:10px}
+.bub img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.bub p{margin:0;background:#2a2b30;color:var(--text);font-size:22px;padding:12px 18px;border-radius:22px 22px 22px 6px;white-space:nowrap}
+.bub p b{display:block;font-size:14px;color:var(--muted);font-weight:600;margin-bottom:2px}
+.file{display:flex;align-items:center;gap:10px;background:#1b1c1f;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;font-family:var(--mono);font-size:18px;color:var(--text-2);box-shadow:0 20px 40px -16px rgba(0,0,0,.8)}
+.file i{width:22px;height:26px;border-radius:4px;background:#1f8f4e;display:inline-block}
+.file i.png{background:#5b6cff}
+#chaosScrim{position:absolute;inset:0;background:radial-gradient(ellipse 720px 340px at 50% 50%,rgba(10,10,10,.92),rgba(10,10,10,.6) 60%,transparent)}
+#words{position:absolute;left:0;right:0;top:540px;text-align:center}
+#words div{position:absolute;left:0;right:0;transform-origin:50% 50%;font-size:150px;font-weight:600;letter-spacing:-.05em;line-height:1;margin-top:-75px}
+#words .c{color:var(--coral)}
+
+/* Title + end card */
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;text-align:center}
+.biglogo{display:flex;align-items:baseline;gap:0;font-weight:700;font-size:40px;letter-spacing:-.03em}
+.biglogo .md{font-weight:500;color:var(--muted)}
+.biglogo .beta{font-size:15px;padding:4px 11px}
+.title{font-size:156px;font-weight:600;letter-spacing:-.055em;line-height:.95}
+.title span{display:inline-block;padding-bottom:.14em;margin-bottom:-.14em}
+.grad{background:var(--spectrum);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tsub{font-family:var(--mono);font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.endsub{font-size:34px;color:var(--text-2);letter-spacing:-.01em}
+.plabel{position:absolute;left:0;top:0;font-family:var(--mono);font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}

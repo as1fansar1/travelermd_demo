@@ -36,7 +36,19 @@ prototype/
   images/       stay photos, provider logos, traveler avatars
   build.py      inlines images and writes index.html and artifact.html
   index.html    built standalone page
+promo/
+  stage.js      42s promo timeline that drives the real prototype UI
+  stage.css     promo styling
+  build.py      writes promo.html from the built prototype
+  render.mjs    renders promo.html to MP4 (Playwright + ffmpeg)
+  poster.png    end-card still
 PRD.md          product requirements
+```
+
+To render the promo video (needs Playwright and ffmpeg):
+
+```bash
+python3 promo/build.py && node promo/render.mjs
 ```
 
 To rebuild after editing `src.html`:

@@ -968,7 +968,7 @@ function chooseSheet(id){
     <h3>Choose ${s.name}?</h3>
     <div class="kv tnum"><span class="k">Happy with it</span><span class="v">${ins.length} of 4</span><span class="k">Total</span><span class="v">${known(id)?eur(total(id)):eur(s.base)+' + fee'}</span></div>
     ${flagged.map(({p,x,f}) => `<div class="privacy warn">${avImg(p,'')}<span><b>${PEOPLE_INFO[p].name} didn’t pick ${s.name}</b> and shared “${esc(x.text)}”. ${esc(f.ev)}</span></div>`).join('')}
-    ${rest.length ? `<p class="sub">${list(rest.map(p=>p==='alex'?'You':PEOPLE_INFO[p].name))} ${rest.length>1?'haven’t':'hasn’t'} said they're happy with this one yet.</p>`:''}
+    ${rest.length ? `<p class="sub">${list(rest.map(p=>p==='alex'?'You':PEOPLE_INFO[p].name))} ${rest.length>1||rest[0]==='alex'?'haven’t':'hasn’t'} said ${rest.length===1&&rest[0]==='alex'?'you’re':'they’re'} happy with this one yet.</p>`:''}
     ${!known(id) ? `<div class="privacy warn">${ic('alert',15,2)}<span>The property fee is still unknown. Check it on Expedia before you book.</span></div>`:''}
     <p class="sub">We'll post the result in the group chat, write it to trip.md, and keep the other stays as backups.</p>
     <div style="display:flex;gap:8px"><button class="btn ghost" style="flex:1" data-act="closeSheet">Not yet</button><button class="btn" style="flex:1.4" data-act="decide" data-id="${id}">Choose and tell the group</button></div>`;
